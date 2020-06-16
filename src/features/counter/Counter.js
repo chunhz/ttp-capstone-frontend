@@ -7,12 +7,14 @@ import {
   incrementAsync,
   selectCount,
 } from './counterSlice';
+
 import styles from './Counter.module.css';
 
 export function Counter() {
   const count = useSelector(selectCount);
   const dispatch = useDispatch();
   const [incrementAmount, setIncrementAmount] = useState('2');
+
 
   return (
     <div>
@@ -24,7 +26,9 @@ export function Counter() {
         >
           +
         </button>
-        <span className={styles.value}>{count}</span>
+        {/* <asyn defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD9d0yhZe9cG5EvvXhpjCrklL7qcEJnmSA&callback=initMap" />
+        <span className={styles.value}>{count}</span> */}
+
         <button
           className={styles.button}
           aria-label="Decrement value"
