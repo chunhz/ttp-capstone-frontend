@@ -1,8 +1,14 @@
-import React from "react";
-import "./App.css";
+import React, { Component } from "react";
+import MapComponent from "./components/MapComponent";
 
-function App() {
-  return <div className="App">hello world</div>;
+export class App extends Component {
+  render() {
+    return (
+      <div>
+        <MapComponent />
+      </div>
+    );
+  }
 }
 
 export default App;
