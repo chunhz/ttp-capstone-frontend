@@ -7,7 +7,7 @@ import {
 } from "@react-google-maps/api";
 import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
-
+import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
 function MapComponent() {
   const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
@@ -50,6 +50,10 @@ function MapComponent() {
           <Marker
             key={hotSpot.OBJECTID}
             position={{ lat: hotSpot.Latitude, lng: hotSpot.Longitude }}
+            icon={{ 
+              url: icon,
+              scaledSize: new window.google.maps.Size(60,60),
+             }}
           />
         ))}
       </GoogleMap>
