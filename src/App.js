@@ -8,6 +8,7 @@ export class App extends Component {
       <div>
         <NavBar />
         <MapComponent />
+        
       </div>
     );
   }
