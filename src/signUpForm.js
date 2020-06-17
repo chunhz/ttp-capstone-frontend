@@ -1,28 +1,32 @@
 import React from 'react';
-import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import "bootstrap/dist/css/bootstrap.css";
+import './form.css'
+import {Button, Form, FormGroup, Label, Input } from 'reactstrap';
+
 
 const Example = (props) => {
   return (
-    <Form>
+    <Form className='signup-form'>
+       <h1 className='text-center'>Sign Up</h1>
         <FormGroup>
-            <Label for="exampleEmail">First Name:</Label>
+            <Label >First Name:</Label>
             <Input type="text" name="firstname" id="firstname" />
         </FormGroup>
         <FormGroup>
-            <Label for="examplePassword">Last Name:</Label>
+            <Label >Last Name:</Label>
             <Input type="text" name="lastname" id="lastname" />
         </FormGroup>
 
         <FormGroup>
-            <Label for="exampleEmail">Email</Label>
+            <Label f>Email</Label>
             <Input type="email" name="email" id="email" />
         </FormGroup>
         <FormGroup>
-            <Label for="examplePassword">Password</Label>
+            <Label >Password</Label>
             <Input type="password" name="password" id="password1"  />
         </FormGroup>
         <FormGroup>
-            <Label for="examplePassword">ReEnter Password</Label>
+            <Label >ReEnter Password</Label>
             <Input type="password" name="password" id="password2" />
         </FormGroup>
       <Button>Sign in</Button>

@@ -1,25 +1,26 @@
 import React from 'react';
-
-
+import "bootstrap/dist/css/bootstrap.css";
+import './form.css'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const hotspotForm = (props) => {
   return (
-    <Form>
+    <Form className='hotspot-form'>
+       <h1 className='text-center'>Add New Hotspot</h1>
       <FormGroup>
-        <Label for="hotspotName">Hotspot Name</Label>
+        <Label >Hotspot Name</Label>
         <Input type="text" name="text" id="hotspotName"/>
       </FormGroup>
       <FormGroup>
-        <Label for="address">Address</Label>
+        <Label >Address</Label>
         <Input type="text" name="text" id="address" />
       </FormGroup>
       <FormGroup>
-        <Label for="zipCode">Zip Code</Label>
+        <Label >Zip Code</Label>
         <Input type="text" name="text" id="zipCode" />
       </FormGroup>
       <FormGroup>
-        <Label for="hotspotType">Select</Label>
+        <Label >Select</Label>
         <Input type="select" name="select" id="hotspotType">
           <option>Free</option>
           <option>Limit Free</option>
