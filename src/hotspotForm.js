@@ -1,4 +1,6 @@
 import React from 'react';
+
+
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 const hotspotForm = (props) => {
@@ -13,7 +15,7 @@ const hotspotForm = (props) => {
         <Input type="text" name="text" id="address" />
       </FormGroup>
       <FormGroup>
-        <Label for="zipCode">Address</Label>
+        <Label for="zipCode">Zip Code</Label>
         <Input type="text" name="text" id="zipCode" />
       </FormGroup>
       <FormGroup>
