@@ -1,9 +1,11 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.css";
 import './form.css'
+//import { AvForm, AvField } from 'availity-reactstrap-validation';
 import {Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-
+//password checkValidity
+//password pattern
 const Example = (props) => {
   return (
     <Form className='signup-form'>
@@ -16,19 +18,26 @@ const Example = (props) => {
             <Label >Last Name:</Label>
             <Input type="text" name="lastname" id="lastname" />
         </FormGroup>
-
-        <FormGroup>
+    <AvForm className='signup-form'>
+      <AvField name="email" label="Email" type="email" />
+      <AvField name="emailProp" label="Email (validate prop)" type="text" validate={{email: true}} />
+    </AvForm >
+        {/* <FormGroup>
             <Label f>Email</Label>
             <Input type="email" name="email" id="email" />
-        </FormGroup>
+        </FormGroup> */}
+
         <FormGroup>
             <Label >Password</Label>
-            <Input type="password" name="password" id="password1"  />
+            <Input type="password" name="password" 
+            id="password1" pattern=""
+             />
         </FormGroup>
         <FormGroup>
             <Label >ReEnter Password</Label>
             <Input type="password" name="password" id="password2" />
         </FormGroup>
+
       <Button>Sign in</Button>
     </Form>
   );
