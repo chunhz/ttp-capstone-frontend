@@ -7,6 +7,7 @@ import {
 } from "@react-google-maps/api";
 import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
+import NYCHotSpotAPI from "../data/NYCHotSpotAPI";
 
 function MapComponent() {
   const libraries = ["places"];
