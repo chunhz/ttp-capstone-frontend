@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-const Example = (props) => {
+const hotspotForm = (props) => {
   return (
     <Form>
       <FormGroup>
@@ -32,4 +32,4 @@ const Example = (props) => {
   );
 }
 
-export default Example;
+export default hotspotForm;
