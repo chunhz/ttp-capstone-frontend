@@ -12,7 +12,7 @@ const NavbarBottom = () => {
             </div>
             <div class="navbar-footer">
                 <ul class="nav navbar-nav navbar-right">
-                    <li>Copyright &copy; 2020  Inc.</li>
+                    <li>Copyright &copy; 2020 ___ Inc.</li>
                 </ul>
             </div>
          </nav>
