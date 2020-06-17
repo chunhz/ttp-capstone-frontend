@@ -6,9 +6,10 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import mapStyle from "../mapFolder/mapStyle";
-import * as hotSpotData from "../data/NYCHotspot.json";
+// import * as hotSpotData from "../data/NYCHotspot.json";
 
-function MapComponent() {
+function MapComponent(props) {
+  const apiData = props
   const libraries = ["places"];
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -33,9 +34,11 @@ function MapComponent() {
 
   if (loadError) return "Error";
   if (!isLoaded) return "Loading Maps";
-  console.log(hotSpotData.default);
+  // console.log(hotSpotData.default);
   const arr = [40.75, 41.75, 39, 50];
+
   return (
+ 
     <div>
       <GoogleMap
         mapContainerStyle={mapContainerStyle}
@@ -46,10 +49,10 @@ function MapComponent() {
           setMarkers((current) => [...current, {}]);
         }}
       >
-        {hotSpotData.default.map((hotSpot) => (
+        {apiData.data.map((theData) => (
           <Marker
-            key={hotSpot.OBJECTID}
-            position={{ lat: hotSpot.Latitude, lng: hotSpot.Longitude }}
+            key={theData.objectid}
+            position={{ lat: Number(theData.latitude), lng: Number(theData.longitude) }}
           />
         ))}
       </GoogleMap>
