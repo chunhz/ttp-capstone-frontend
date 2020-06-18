@@ -36,8 +36,6 @@ function MapComponent() {
     setCurrentLocation(currentLocation);
   });
 
-
-
   if (loadError) return "Error";
   if (!isLoaded) return "Loading Maps";
 
@@ -69,6 +67,7 @@ function MapComponent() {
           console.log(lat1)
       }}
       >
+        
         {hotSpotData.default.map((hotSpot) => (
           <Marker
             key={hotSpot.OBJECTID}
@@ -81,8 +80,9 @@ function MapComponent() {
         onClick= { () => {
           setSelectedWifi(hotSpot);
         }
+      }
         
-        }
+        
           />
         ))}
         {selectedWifi && (
