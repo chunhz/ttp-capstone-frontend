@@ -9,10 +9,12 @@ import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
 import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
 function MapComponent() {
-  const libraries = ["places"];
+ 
+  const [markers, setMarkers] = React.useState([]);
+  const [selectedWifi, setSelectedWifi] = React.useState(null);
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-    libraries,
   });
 
   const mapContainerStyle = {
@@ -29,12 +31,10 @@ function MapComponent() {
     zoomControl: true,
   };
 
-  const [markers, setMarkers] = React.useState([]);
 
   if (loadError) return "Error";
   if (!isLoaded) return "Loading Maps";
-  console.log(hotSpotData.default);
-  const arr = [40.75, 41.75, 39, 50];
+
   return (
     <div>
       <GoogleMap
@@ -54,8 +54,33 @@ function MapComponent() {
               url: icon,
               scaledSize: new window.google.maps.Size(60,60),
              }}
+        onClick = { () => {
+          setSelectedWifi(hotSpot);
+        }
+
+        }
           />
         ))}
+        {selectedWifi && (
+          <InfoWindow
+            position={{ lat: selectedWifi.Latitude, lng: selectedWifi.Longitude }}
+            onCloseClick={() => {
+              setSelectedWifi(null);
+            }}
+          >
+            <div>
+              <p>Wifi-Hotspot Info</p>
+              <ul>
+                <li>SSID: {selectedWifi.SSID}</li>
+                <li>Provider: {selectedWifi.Provider}</li>
+                <li>Borough: {selectedWifi.City}</li>
+                <li>Wifi-Session: {selectedWifi.Type}</li>
+                <li>Location-Type: {selectedWifi.Location_T}</li>
+              </ul>
+              
+            </div>
+          </InfoWindow>
+        )}
       </GoogleMap>
     </div>
   );
