@@ -8,6 +8,8 @@ import {
 import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
 import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
+import redPointer from '../accessories/images/red-pointer.png';
+
 function MapComponent() {
  
   const [markers, setMarkers] = React.useState([]);
@@ -47,6 +49,15 @@ function MapComponent() {
     }
 
   }))
+  const currentPosition = () => {
+    return <div>
+      {<InfoWindow 
+            lat = {currentLocation.lat}
+            lng = {currentLocation.lng}
+            content = {'You are here!'} 
+          />}
+    </div>
+  }
   return (
     <div>
       <GoogleMap
@@ -55,6 +66,8 @@ function MapComponent() {
         options = {
           style}
         center={currentLocation}
+        width = {window.width}
+        height = {window.height}
         onLoad={() => {
           setMarkers((current) => [...current, {}]);
         }}
@@ -85,6 +98,18 @@ function MapComponent() {
         
           />
         ))}
+        {currentLocation && (
+          <div>
+          <InfoWindow position = {{ lat: currentLocation.lat, lng: currentLocation.lng}}>
+            <strong><h7>You are here!</h7></strong></InfoWindow>
+          <Marker 
+          position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
+          icon={{ 
+            url: redPointer,
+            scaledSize: new window.google.maps.Size(50,50),
+           }}/>
+           </div>
+        )}
         {selectedWifi && (
           <InfoWindow
             position={{ lat: selectedWifi.Latitude, lng: selectedWifi.Longitude }}
