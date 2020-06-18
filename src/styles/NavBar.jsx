@@ -23,8 +23,8 @@ const NavBar = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="https://github.com/BayardoZelaya/ttp-capstone-frontend/tree/master">
-                Github
+              <NavLink href="/add">
+                Add
               </NavLink>
             </NavItem>
           </Nav>
