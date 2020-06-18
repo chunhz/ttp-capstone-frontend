@@ -23,7 +23,7 @@ const NavBar = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/add">
+              <NavLink href="/add" {/*onClick={() => props.toggle()*/} >
                 Add
               </NavLink>
             </NavItem>
