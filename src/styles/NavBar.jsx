@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
+import {AddHotspotForm} from "../components/AddHotspotForm";
 import {
   Collapse,
   Navbar,
@@ -23,7 +24,7 @@ const NavBar = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/add" {/*onClick={() => props.toggle()*/} >
+              <NavLink href="/add" component={AddHotspotForm} >
                 Add
               </NavLink>
             </NavItem>
