@@ -9,12 +9,14 @@ import {
   NavItem,
   NavLink,
 } from "reactstrap";
-
+import AddHotspotForm from '../components/AddHotspotForm'
+import App from '../App'
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  let formDisplay = false;
   const toggle = () => setIsOpen(!isOpen);
-
+  // const formDisplay = false;
+  
   return (
     <div>
       <Navbar color="dark" dark expand="md" className="mb-5">
@@ -23,8 +25,10 @@ const NavBar = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink href="/add" {/*onClick={() => props.toggle()*/} >
-                Add
+            {/* href="/add" */}
+              <NavLink href="/add" onClick={ formDisplay=true, <AddHotspotForm />}  >
+                WiFi Add+
+              {formDisplay ? <AddHotspotForm /> : <App/>}
               </NavLink>
             </NavItem>
           </Nav>
