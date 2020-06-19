@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   GoogleMap,
   useLoadScript,
@@ -7,11 +7,16 @@ import {
 } from "@react-google-maps/api";
 import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
-import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
-import redPointer from '../accessories/images/red-pointer.png';
+import icon from "../accessories/images/wifi-pointer-before-selected.png";
+import { connect } from "react-redux";
+import { getHotSpots } from "../actions/hotspotActions";
+import PropTypes from "prop-types";
+import { render } from "@testing-library/react";
+const MapComponent = () => {
+  const componentDidMount = () => {
+    this.props.getHotSpots();
+  };
 
-function MapComponent() {
- 
   const [markers, setMarkers] = React.useState([]);
   const [pointedLocation, setPointedLocation] = React.useState([]);
   const [selectedWifi, setSelectedWifi] = React.useState(null);
@@ -33,104 +38,96 @@ function MapComponent() {
   navigator.geolocation.getCurrentPosition((position) => {
     const currentLocation = {
       lat: position.coords.latitude,
-      lng: position.coords.longitude
-    }
+      lng: position.coords.longitude,
+    };
     setCurrentLocation(currentLocation);
   });
 
   if (loadError) return "Error";
   if (!isLoaded) return "Loading Maps";
 
-  const areaHotSpotData=[];
-  hotSpotData.default.map( ( hotSpot => {
-    if ((hotSpot.Latitude - pointedLocation.lat < 0.3 || hotSpot.Latitude - pointedLocation.lat < -0.3) && (hotSpot.Longitude - pointedLocation.lng < 0.3 || hotSpot.Longitude - pointedLocation.lng < -0.3)  ){
+  const areaHotSpotData = [];
+  hotSpotData.default.map((hotSpot) => {
+    if (
+      (hotSpot.Latitude - pointedLocation.lat < 0.3 ||
+        hotSpot.Latitude - pointedLocation.lat < -0.3) &&
+      (hotSpot.Longitude - pointedLocation.lng < 0.3 ||
+        hotSpot.Longitude - pointedLocation.lng < -0.3)
+    ) {
       areaHotSpotData = hotSpot;
       console.log(areaHotSpotData);
     }
+  });
+  render = () => {
+    return (
+      <div>
+        <GoogleMap
+          mapContainerStyle={mapContainerStyle}
+          zoom={14}
+          options={style}
+          center={currentLocation}
+          onLoad={() => {
+            setMarkers((current) => [...current, {}]);
+          }}
+          onDragEnd={(lat, lng) => {
+            // setPointedLocation(current => [...current, {
+            //   lat: event.latlng.lat(),
+            //   lng: event.latlng.lng(),
+            // }])
+            const lat1 = lat;
+            console.log(lat1);
+          }}
+        >
+          {hotSpotData.default.map((hotSpot) => (
+            <Marker
+              key={hotSpot.OBJECTID}
+              position={{ lat: hotSpot.Latitude, lng: hotSpot.Longitude }}
+              icon={{
+                url: icon,
+                scaledSize: new window.google.maps.Size(60, 60),
+              }}
+              onClick={() => {
+                setSelectedWifi(hotSpot);
+              }}
+            />
+          ))}
+          {selectedWifi && (
+            <InfoWindow
+              position={{
+                lat: selectedWifi.Latitude,
+                lng: selectedWifi.Longitude,
+              }}
+              onCloseClick={() => {
+                setSelectedWifi(null);
+              }}
+            >
+              <div>
+                <b>
+                  <p>Wifi-Hotspot Info</p>
+                </b>
+                <ul>
+                  <li>SSID: {selectedWifi.SSID}</li>
+                  <li>Provider: {selectedWifi.Provider}</li>
+                  <li>Borough: {selectedWifi.City}</li>
+                  <li>Wifi-Session: {selectedWifi.Type}</li>
+                  <li>Location-Type: {selectedWifi.Location_T}</li>
+                </ul>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
+      </div>
+    );
+  };
+};
 
-  }))
-  const currentPosition = () => {
-    return <div>
-      {<InfoWindow 
-            lat = {currentLocation.lat}
-            lng = {currentLocation.lng}
-            content = {'You are here!'} 
-          />}
-    </div>
-  }
-  return (
-    <div>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={14}
-        options = {
-          style}
-        center={currentLocation}
-        width = {window.width}
-        height = {window.height}
-        onLoad={() => {
-          setMarkers((current) => [...current, {}]);
-        }}
-        onClick  = { (event) => {
-          setPointedLocation(current => [...current, {
-            lat: event.latLng.lat(),
-            lng: event.latLng.lng(),
-          }])
-          console.log(event)
-      }}
-      >
-        
-        {hotSpotData.default.map((hotSpot) => (
-          <Marker
-            key={hotSpot.OBJECTID}
-            position={{ lat: hotSpot.Latitude, lng: hotSpot.Longitude }}
-            icon={{ 
-              url: icon,
-              scaledSize: new window.google.maps.Size(60,60),
-             }}
+MapComponent.propTypes = {
+  getHotSpots: PropTypes.func.isRequired,
+  hotSpot: PropTypes.object.isRequired,
+};
 
-        onClick= { () => {
-          setSelectedWifi(hotSpot);
-        }
-      }
-        
-        
-          />
-        ))}
-        {currentLocation && (
-          <div>
-          <InfoWindow position = {{ lat: currentLocation.lat, lng: currentLocation.lng}}>
-            <strong><h7>You are here!</h7></strong></InfoWindow>
-          <Marker 
-          position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
-          icon={{ 
-            url: redPointer,
-            scaledSize: new window.google.maps.Size(50,50),
-           }}/>
-           </div>
-        )}
-        {selectedWifi && (
-          <InfoWindow
-            position={{ lat: selectedWifi.Latitude, lng: selectedWifi.Longitude }}
-            onCloseClick={() => {
-              setSelectedWifi(null);
-            }}
-          >
-            <div>
-              <b><p>Wifi-Hotspot Info</p></b>
-              <ul>
-                <li>SSID: {selectedWifi.SSID}</li>
-                <li>Provider: {selectedWifi.Provider}</li>
-                <li>Borough: {selectedWifi.City}</li>
-                <li>Wifi-Session: {selectedWifi.Type}</li>
-                <li>Location-Type: {selectedWifi.Location_T}</li>
-              </ul>
-            </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-    </div>
-  );
-}
+const mapStateToProps = (state) => ({
+  hotSpot: state.hotSpot,
+});
 
-export default MapComponent;
+export default connect(mapStateToProps, { getHotSpots })(MapComponent);
