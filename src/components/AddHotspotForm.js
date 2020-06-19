@@ -13,22 +13,26 @@ const hotspotForm = (props) => {
       </FormGroup>
       <FormGroup>
         <Label >Address</Label>
-        <Input type="text" name="text" id="address" />
+        <Input type="text" name="text" id="location" />
+      </FormGroup>
+      <FormGroup>
+        <Label >City</Label>
+        <Input type="text" name="text" id="city" />
       </FormGroup>
       <FormGroup>
         <Label >Zip Code</Label>
         <Input type="text" name="text" id="zipCode" />
       </FormGroup>
       <FormGroup>
-        <Label >Select</Label>
-        <Input type="select" name="select" id="hotspotType">
+        <Label >Select Wifi session</Label>
+        <Input type="select" name="select" id="Type">
           <option>Free</option>
           <option>Limit Free</option>
         </Input>
       </FormGroup>
       <FormGroup>
-        <Label for="exampleText">Text Area</Label>
-        <Input type="textarea" name="text" id="exampleText" />
+        <Label for="exampleText">Location-Type</Label>
+        <Input type="textarea" name="text" id="locationType" />
       </FormGroup>
       <Button>Submit</Button>
     </Form>
