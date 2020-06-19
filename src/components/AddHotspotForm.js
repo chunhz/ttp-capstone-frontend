@@ -33,7 +33,7 @@ const hotspotForm = (props) => {
       <Button>Submit</Button>
     </Form>
   );
-}
+}   
 
 // SSID: TransitWirelessWiFi
 // Provider: Transit Wireless

@@ -27,7 +27,7 @@ const NavBar = (props) => {
             <NavItem>
             {/* href="/add" */}
               <NavLink href="/add" onClick={ formDisplay=true, <AddHotspotForm />}  >
-                WiFi Add+
+                WiFi Add+ 
               {formDisplay ? <AddHotspotForm /> : <App/>}
               </NavLink>
             </NavItem>
