@@ -26,7 +26,7 @@ const NavBar = (props) => {
           <Nav className="ml-auto" navbar>
             <NavItem>
             {/* href="/add" */}
-              <NavLink href="/add" onClick={ formDisplay=true, <AddHotspotForm />}  >
+              <NavLink href="/add" onClick={ formDisplay=true} component={<AddHotspotForm />}  >
                 WiFi Add+ 
               {formDisplay ? <AddHotspotForm /> : <App/>}
               </NavLink>
