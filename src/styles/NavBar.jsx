@@ -17,6 +17,13 @@ const NavBar = (props) => {
   const toggle = () => setIsOpen(!isOpen);
   // const formDisplay = false;
   
+/** <NavLink href="/add" onClick={ formDisplay=true} component={<AddHotspotForm />}  >
+                WiFi Add+ 
+              {formDisplay ? <AddHotspotForm /> : <App/>}
+              </NavLink> */
+
+
+
   return (
     <div>
       <Navbar color="dark" dark expand="md" className="mb-5">
