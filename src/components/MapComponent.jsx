@@ -71,13 +71,12 @@ function MapComponent() {
         onLoad={() => {
           setMarkers((current) => [...current, {}]);
         }}
-        onDragEnd  = { (lat, lng) => {
-          // setPointedLocation(current => [...current, {
-          //   lat: event.latlng.lat(),
-          //   lng: event.latlng.lng(),
-          // }])
-          const lat1 = lat;
-          console.log(lat1)
+        onClick  = { (event) => {
+          setPointedLocation(current => [...current, {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng(),
+          }])
+          console.log(event)
       }}
       >
         
