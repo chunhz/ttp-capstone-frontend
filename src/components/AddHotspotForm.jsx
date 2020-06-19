@@ -7,11 +7,16 @@ export default class hotspotForm extends Component{
   constructor(props){
     super(props);
     this.state = {
-
+      input: null,
     }
   }
-
+  handleSumbit = (event) => {
+    this.setState({input: event.target.value})
+  }
+  
   render(){
+    const test =console.log(this.state.input)
+
     return(
       <div>
         <Form className='hotspot-form'>
@@ -43,8 +48,10 @@ export default class hotspotForm extends Component{
         <Label for="exampleText">Location-Type</Label>
         <Input type="textarea" name="text" id="locationType" />
       </FormGroup>
-      <Button>Submit</Button>
+      
+      <Button >Submit</Button>
     </Form>
+    {test}
       </div>
     )
   }  

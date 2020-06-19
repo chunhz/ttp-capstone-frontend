@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import MapComponent from "./components/MapComponent";
 import NavBar from "./styles/NavBar";
-import AddHotspotForm from './components/AddHotspotForm'
+import AddHotspotForm from './components/AddHotspotForm.jsx'
 
 export class App extends Component {
   constructor(props){
@@ -9,14 +9,10 @@ export class App extends Component {
     
   }
   render() {
-    // console.log(this.props.formDisplay)
-    // let displayForm = true ;
     return (
       <div>
         <NavBar />
         <MapComponent/>
-      
-        
       </div>
     );
   }

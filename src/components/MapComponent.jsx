@@ -9,6 +9,7 @@ import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
 import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
 import redPointer from '../accessories/images/red-pointer.png';
+import Geocode from "react-geocode";
 
 function MapComponent() {
  
@@ -19,7 +20,7 @@ function MapComponent() {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   });
-
+  Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
   const mapContainerStyle = {
     width: "70vw",
     height: "70vh",
@@ -71,15 +72,15 @@ function MapComponent() {
         onLoad={() => {
           setMarkers((current) => [...current, {}]);
         }}
-        onDragEnd  = { (lat, lng) => {
-          // setPointedLocation(current => [...current, {
-          //   lat: event.latlng.lat(),
-          //   lng: event.latlng.lng(),
-          // }])
-          const lat1 = lat;
-          console.log(lat1)
+        onClick  = { (e) => {
+          setPointedLocation(current => [...current, {
+            lat:  e.latLng.lat(),
+            lng: e.latLng.lng(),
+          }])
+          console.log(pointedLocation)
       }}
-      >
+      
+       >
         
         {hotSpotData.default.map((hotSpot) => (
           <Marker
