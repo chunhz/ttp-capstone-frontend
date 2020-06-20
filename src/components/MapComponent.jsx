@@ -91,7 +91,7 @@ class MapComponent extends Component {
                 url: icon,
                 scaledSize: new window.google.maps.Size(60,60),
                }}
-          onClick= { () => {
+            onClick= { () => {
             this.setState({selectedWifi: hotSpot, showInfoWindow: true});
           }
           
