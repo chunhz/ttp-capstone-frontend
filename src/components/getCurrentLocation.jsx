@@ -11,15 +11,15 @@ export class getCurrentLocation extends Component {
     }
   }
   componentDidMount(){
-      navigator.geolocation.watchPosition((position) => {
-          this.setState({
-            currentLat: position.coords.latitude,
-            currentLng: position.coords.longitude
-          })
-          // ,
-        });
-        console.log(this.state.currentLat)
-        this.loadMap();
+      // navigator.geolocation.watchPosition((position) => {
+      //     this.setState({
+      //       currentLat: position.coords.latitude,
+      //       currentLng: position.coords.longitude
+      //     })
+      //     // ,
+      //   });
+      //   console.log(this.state.currentLat)
+      //   this.loadMap();
   }
   render() {
     return (

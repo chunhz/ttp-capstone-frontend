@@ -16,8 +16,13 @@ class MapComponent extends Component {
     this.state = {
       markers: null,
       pointedLocation: null,
-      selectedWifi: true,
+      selectedWifi: false,
       currentLocation: null,
+      defaultLocation: {
+        lat: 40.7128,
+        lng: -74.0060,
+      },
+      isLocated: false,
       isLoaded: null,
       loadError: null,
       googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY
@@ -36,24 +41,26 @@ class MapComponent extends Component {
     width: "100vw",
     height: "70vh",
   };
-  style = {
-    styles: mapStyle,
-    disableDefaultUI: true,
-    zoomControl: true,
-  };
 
   
-  // componentDidMount() {
-  //   navigator.geolocation.getCurrentPosition((position) => {
-  //       this.setState({
-  //         currentLat: position.coords.latitude,
-  //         currentLng: position.coords.longitude
-  //       })
-  //       // ,
+  componentDidMount() {
+    navigator.geolocation.watchPosition((position) => {
+        this.setState({
+          defaultLocation: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+          },
+          // currentLat: position.coords.latitude,
+          // currentLng: position.coords.longitude,
+          isLocated: true,
+        })
+        // console.log(this.state.currentLat)
+        // console.log(this.state.currentLng)
+        // ,
         
-  //     });
+      });
       
-  // }
+  }
   
 
   
@@ -62,30 +69,19 @@ class MapComponent extends Component {
   
   // if (this.state.loadError) return "Error";
   // if (!this.state.isLoaded) return "Loading Maps";
-  console.log(this.props.currentLat)
-  console.log(this.props.currentLng)
-  const currentLat = this.state.currentLng;
-  const currentPosition = () => {
-    return <div>
-      {<InfoWindow 
-            lat = {this.state.currentLocation.lat}
-            lng = {this.state.currentLocation.lng}
-            content = {'You are here!'} 
-          />}
-    </div>
-  }
+  console.log("is located "+this.state.isLocated)
     return (
       <div>
         <Map
           google={this.props.google}
           style={this.mapContainerStyle}
           styles= {mapStyle}
-          zoom={11}
+          zoom={14}
           disableDefaultUI= {true}
           zoomControl= {true}
           streetViewControl={true}
-          initialCenter={{ lat: 40.56, lng: -74 }}
-          // initialCenter={{ lat: this.props.currentLat, lng: this.props.currentLng }}
+          initialCenter={{lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng } }
+          // initialCenter={{ lat: this.state.currentLat, lng: this.state.currentLng }}
           
           onClick  = { (event) => {
             // this.setState(current => [...current, {
@@ -111,17 +107,26 @@ class MapComponent extends Component {
         }
             />
           ))}
-          {this.state.currentLocation && (
-            <div>
-            <InfoWindow position = {{ lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng}}>
-              <strong><h7>You are here!</h7></strong></InfoWindow>
-            <Marker 
-            position={{ lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng }}
-            icon={{ 
-              url: redPointer,
-              scaledSize: new window.google.maps.Size(50,50),
-             }}/>
-             </div>
+          {this.state.isLocated && (
+         
+            <InfoWindow
+              visible = {true}
+              position={{ lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng }}
+              icon = {{}}
+              onCloseClick={() => {
+                this.setState({defaultLocation: null});
+              }}
+            >
+            <b><p>You're here!</p></b>
+            </InfoWindow>
+            // <Marker
+            // position={{ lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng }}
+            // icon={{ 
+            //   url: redPointer,
+            //   scaledSize: new window.google.maps.Size(60,60),
+            //  }}
+            // /> 
+          
           )}
           {this.state.selectedWifi && (
             <InfoWindow
