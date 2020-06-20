@@ -1,9 +1,13 @@
 .listArea {
-  position: fixed;
+  position: absolute;
   top: 60vh;
   width: 100vw;
-  height: 40vh;
   background-color: 	rgb(181, 198, 214);
+
+}
+.list {
+  list-style-type: square;
+  color:rgb(181, 198, 214);
 }
 .font {
   color: #ffffff;
@@ -17,25 +21,26 @@
  border: 1px solid white;
  background-color:#343a3f;
  box-shadow: 5px 5px 5px black;
- /* margin-bottom: 15px; */
  transition: .2s;
  border-radius: 15px;
 }
-
 .itemName {
   color: #ffffff;
-  display: flex;
+  width: 100px;
   text-align: left;
   margin-top: 20px;
 }
 
 .itemDistance{
-  color: #ffffff;
   text-align: center;
   margin-top: -50px;
-   margin-right: 50px; 
-}
+  margin-right: -10px; 
+  color: #ffffff;
 
+}
+.itemSSID{
+  color: #ffffff;
+}
 .itemAddress{
   color: #ffffff;
   text-align: right;

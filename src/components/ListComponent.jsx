@@ -1,29 +1,38 @@
 import React, { Component } from 'react';
 import '../styles/listArea.css'
+
 export default class ListComponent extends Component {
   constructor(props){
     super(props)
     this.state={
     }
   }
-
-  render(){
-    
-    // const displayList = this.props.spots.map((place, i ) => {
-      const displayList = 
-       <div>
-      <p className = "listItem">
-        <p className = "itemName">Name </p>
-        <p className = "itemDistance">560 ft.</p>
+  displayList = this.props.selectedWifi.map((place, id ) => {
+      // const displayList = 
+  return <div>
+    <ul className="list">
+      <li className = "listItem" onClick= { () =>{
+        this.props.locateMarker(id);
+      }}>
+        <p className = "itemName"  >{place.SSID} </p>
+        {/* <p className = "itemSSID"></p> */}
+        <p className = "itemDistance">{place.Location_T}</p>
         <p className = "itemAddress">3921 street </p>
         {/* <h1 className = "font">Hello</h1> */}
-      </p>
+      </li>
+      </ul>
     </div>
-    // })
+    
+    })
+  display = <p>Hello</p>;
 
+
+    
+  
+  render(){
     return (
       <div className = "listArea">
-        {displayList}
+        {this.displayList}
       </div>
       
     )
