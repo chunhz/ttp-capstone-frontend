@@ -8,7 +8,9 @@ import {
 import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
 import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
+import '../styles/mapStyle.css'
 import redPointer from '../accessories/images/red-pointer.png';
+import ListComponent from './ListComponent'
 class MapComponent extends Component {
   
   constructor(props){
@@ -61,7 +63,7 @@ class MapComponent extends Component {
   render() {
     return (
       <div>
-        <Map
+        <Map className = "map"
           google={this.props.google}
           style={this.mapContainerStyle}
           styles= {mapStyle}
@@ -139,6 +141,7 @@ class MapComponent extends Component {
             /> 
           }
         </Map>
+        <ListComponent />
       </div>
     );
   }
