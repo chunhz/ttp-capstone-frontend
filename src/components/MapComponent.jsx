@@ -9,7 +9,6 @@ import mapStyle from "../mapFolder/mapStyle";
 import * as hotSpotData from "../data/NYCHotspot.json";
 import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
 import redPointer from '../accessories/images/red-pointer.png';
-
 class MapComponent extends Component {
   
   constructor(props){
@@ -17,7 +16,7 @@ class MapComponent extends Component {
     this.state = {
       markers: null,
       pointedLocation: null,
-      selectedWifi: null,
+      selectedWifi: true,
       currentLocation: null,
       isLoaded: null,
       loadError: null,
@@ -44,8 +43,17 @@ class MapComponent extends Component {
   };
 
   
-  componentDidMount() {
-  }
+  // componentDidMount() {
+  //   navigator.geolocation.getCurrentPosition((position) => {
+  //       this.setState({
+  //         currentLat: position.coords.latitude,
+  //         currentLng: position.coords.longitude
+  //       })
+  //       // ,
+        
+  //     });
+      
+  // }
   
 
   
@@ -54,15 +62,9 @@ class MapComponent extends Component {
   
   // if (this.state.loadError) return "Error";
   // if (!this.state.isLoaded) return "Loading Maps";
-
-  navigator.geolocation.getCurrentPosition((position) => {
-    const currentLocation = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    }
-    this.setState(currentLocation);
-  });
-
+  console.log(this.props.currentLat)
+  console.log(this.props.currentLng)
+  const currentLat = this.state.currentLng;
   const currentPosition = () => {
     return <div>
       {<InfoWindow 
@@ -75,30 +77,25 @@ class MapComponent extends Component {
     return (
       <div>
         <Map
-          google ={this.props.google}
+          google={this.props.google}
           style={this.mapContainerStyle}
           styles= {mapStyle}
-          zoom={14}
+          zoom={11}
           disableDefaultUI= {true}
           zoomControl= {true}
-          // options = {
-          // this.style}
-          // initialCenter={this.state.currentLocation}
-          initialCenter={{ lat: 47.444, lng: -122.176}}
-          // width = {window.width}
-          // height = {window.height}
-          // onLoad={() => {
-          //   this.setState((current) => [...current, {}]);
-          // }}
-        //   onClick  = { (event) => {
-        //     this.setState(current => [...current, {
-        //       lat: event.latLng.lat(),
-        //       lng: event.latLng.lng(),
-        //     }])
-        //     console.log(event)
-        // }}
+          streetViewControl={true}
+          initialCenter={{ lat: 40.56, lng: -74 }}
+          // initialCenter={{ lat: this.props.currentLat, lng: this.props.currentLng }}
+          
+          onClick  = { (event) => {
+            // this.setState(current => [...current, {
+            //   lat: event.latLng.lat(),
+            //   lng: event.latLng.lng(),
+            // }])
+            // this.setState({ selectedWifi: true})
+        }}
         >
-{/*           
+       
           {hotSpotData.default.map((hotSpot) => (
             <Marker
               key={hotSpot.OBJECTID}
@@ -108,11 +105,10 @@ class MapComponent extends Component {
                 scaledSize: new window.google.maps.Size(60,60),
                }}
           onClick= { () => {
-            this.setState(hotSpot);
+            this.setState({selectedWifi: hotSpot});
           }
+          
         }
-          
-          
             />
           ))}
           {this.state.currentLocation && (
@@ -129,6 +125,7 @@ class MapComponent extends Component {
           )}
           {this.state.selectedWifi && (
             <InfoWindow
+              visible = {true}
               position={{ lat: this.state.selectedWifi.Latitude, lng: this.state.selectedWifi.Longitude }}
               onCloseClick={() => {
                 this.setState({currentLocation: null});
@@ -145,7 +142,7 @@ class MapComponent extends Component {
                 </ul>
               </div>
             </InfoWindow>
-          )} */}
+          )}
         </Map>
       </div>
     );
