@@ -22,6 +22,8 @@ class MapComponent extends Component {
         lat: 40.7128,
         lng: -74.0060,
       },
+      showInfoWindow: false,
+      showHello: true,
       isLocated: false,
       isLoaded: null,
       loadError: null,
@@ -50,26 +52,13 @@ class MapComponent extends Component {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
           },
-          // currentLat: position.coords.latitude,
-          // currentLng: position.coords.longitude,
           isLocated: true,
         })
-        // console.log(this.state.currentLat)
-        // console.log(this.state.currentLng)
-        // ,
-        
       });
-      
   }
   
 
-  
-
   render() {
-  
-  // if (this.state.loadError) return "Error";
-  // if (!this.state.isLoaded) return "Loading Maps";
-  console.log("is located "+this.state.isLocated)
     return (
       <div>
         <Map
@@ -101,36 +90,28 @@ class MapComponent extends Component {
                 scaledSize: new window.google.maps.Size(60,60),
                }}
           onClick= { () => {
-            this.setState({selectedWifi: hotSpot});
+            this.setState({selectedWifi: hotSpot, showInfoWindow: true});
           }
           
         }
             />
           ))}
           {this.state.isLocated && (
-         
             <InfoWindow
-              visible = {true}
+              visible = {this.state.showHello}
               position={{ lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng }}
               icon = {{}}
-              onCloseClick={() => {
-                this.setState({defaultLocation: null});
+              onClose={() => {
+                this.setState({showHello: false});
               }}
+              
             >
-            <b><p>You're here!</p></b>
+            <b><p>Hello! You're here!</p></b>
             </InfoWindow>
-            // <Marker
-            // position={{ lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng }}
-            // icon={{ 
-            //   url: redPointer,
-            //   scaledSize: new window.google.maps.Size(60,60),
-            //  }}
-            // /> 
-          
           )}
-          {this.state.selectedWifi && (
+          {/* {this.state.selectedWifi && ( */}
             <InfoWindow
-              visible = {true}
+              visible = {this.state.showInfoWindow}
               position={{ lat: this.state.selectedWifi.Latitude, lng: this.state.selectedWifi.Longitude }}
               onCloseClick={() => {
                 this.setState({currentLocation: null});
@@ -147,7 +128,16 @@ class MapComponent extends Component {
                 </ul>
               </div>
             </InfoWindow>
-          )}
+          {/* )} */}
+          {
+            <Marker
+            position={{ lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng }}
+            icon={{ 
+              url: redPointer,
+              scaledSize: new window.google.maps.Size(50,50),
+             }}
+            /> 
+          }
         </Map>
       </div>
     );
