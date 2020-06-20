@@ -1,8 +1,8 @@
 .listArea {
   position: fixed;
+  top: 60vh;
   width: 100vw;
   height: 40vh;
-  top: 70vh;
   background-color: 	rgb(181, 198, 214);
 }
 .font {
@@ -15,18 +15,18 @@
  margin-left: 10%;
  margin-right: 10%;
  border: 1px solid white;
- background-color: rgb(49, 53, 58);
+ background-color:#343a3f;
  box-shadow: 5px 5px 5px black;
- /* height: 50px; */
  /* margin-bottom: 15px; */
  transition: .2s;
- border-radius: 10px;
+ border-radius: 15px;
 }
 
 .itemName {
   color: #ffffff;
   display: flex;
   text-align: left;
+  margin-top: 20px;
 }
 
 .itemDistance{

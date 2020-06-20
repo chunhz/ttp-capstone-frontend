@@ -43,7 +43,7 @@ class MapComponent extends Component {
 
   mapContainerStyle = {
     width: "100vw",
-    height: "70vh",
+    height: "51vh",
   };
 
   
@@ -72,8 +72,7 @@ class MapComponent extends Component {
           zoomControl= {true}
           streetViewControl={true}
           initialCenter={{lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng } }
-          // initialCenter={{ lat: this.state.currentLat, lng: this.state.currentLng }}
-          
+ 
           onClick  = { (event) => {
             // this.setState(current => [...current, {
             //   lat: event.latLng.lat(),
@@ -111,7 +110,6 @@ class MapComponent extends Component {
             <b><p>Hello! You're here!</p></b>
             </InfoWindow>
           )}
-          {/* {this.state.selectedWifi && ( */}
             <InfoWindow
               visible = {this.state.showInfoWindow}
               position={{ lat: this.state.selectedWifi.Latitude, lng: this.state.selectedWifi.Longitude }}
