@@ -58,6 +58,7 @@ class MapComponent extends Component {
 
   render() {
     const { hotSpots } = this.props.hotSpot;
+    console.log(hotSpots);
     // if (this.state.loadError) return "Error";
     // if (!this.state.isLoaded) return "Loading Maps";
     console.log("is located " + this.state.isLocated);
