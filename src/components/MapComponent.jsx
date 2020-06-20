@@ -15,6 +15,7 @@ class MapComponent extends Component {
       pointedLocation: null,
       selectedWifi: false,
       currentLocation: null,
+      rerender : 1,
       defaultLocation: {
         lat: 40.7128,
         lng: -74.006,
@@ -57,7 +58,27 @@ class MapComponent extends Component {
   }
 
   render() {
+
+
+
+  // X = latitude
+  // Y=  longtitudes
+    let i = 0;
+    let x = [];
+    let y = [];
+
     const { hotSpots } = this.props.hotSpot;
+  
+      for(var key in hotSpots){
+        x[i] = (hotSpots[key].latitude)
+        // console.log("x" +x[i])
+        y[i] = (hotSpots[key].longitudes)
+        i++
+        // console.log("y" +y[i])
+      }
+   
+
+
     // if (this.state.loadError) return "Error";
     // if (!this.state.isLoaded) return "Loading Maps";
     console.log("is located " + this.state.isLocated);
@@ -85,19 +106,24 @@ class MapComponent extends Component {
             // this.setState({ selectedWifi: true})
           }}
         >
-          {hotSpots.map((_id, hotSpot) => (
-            <Marker
-              key={_id}
-              position={{ lat: hotSpot.Latitude, lng: hotSpot.Longitude }}
-              icon={{
-                url: icon,
-                scaledSize: new window.google.maps.Size(60, 60),
-              }}
-              onClick={() => {
-                this.setState({ selectedWifi: hotSpot });
-              }}
-            />
-          ))}
+          {hotSpots.map(function(hotSpot, index )  {
+            return(              
+                  <Marker
+                    key={index}
+                    position={{ lat: x[index], lng: y[index] }}
+                    icon={{
+                      url: icon,
+                      scaledSize: new window.google.maps.Size(60, 60),
+                    }}
+                  
+                    onClick={() => {
+                      this.setState({ selectedWifi: hotSpot });
+                    }}>
+                      
+                    </Marker>
+            )
+          })}
+
           {this.state.isLocated && (
             <InfoWindow
               visible={true}
