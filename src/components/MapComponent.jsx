@@ -1,14 +1,17 @@
 import React, { Component } from "react";
-import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
+import { Map, GoogleApiWrapper, Marker, InfoWindow, Polygon } from "google-maps-react";
 import mapStyle from "../mapFolder/mapStyle";
 import icon from "../accessories/images/wifi-pointer-before-selected.png";
 import redPointer from "../accessories/images/red-pointer.png";
-import { getHotSpots, getCloseHotSpots, getManhattan,getQueens,getStatenIsland,getBrooklyn,getBronx } from "../actions/hotspotActions";
+import { getCloseHotSpots, getManhattan,getQueens,getStatenIsland,getBrooklyn,getBronx } from "../actions/hotspotActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ListComponent from "./ListComponent";
 import '../styles/mapStyle.css';
 import axios from "axios";
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 
 
@@ -34,6 +37,7 @@ class MapComponent extends Component {
       showCurrentL: true,
       showListInfo: false,
       selectedList: [],
+      zoomSize: 13,
     };
     this.getManhattanWifi = this.getManhattanWifi.bind(this)
     this.getQueensWifi = this.getQueensWifi.bind(this)
@@ -147,8 +151,6 @@ class MapComponent extends Component {
     // console.log(this.state.hotSpotsData)
     // console.log(hotSpots[0])
     const listMarker = (id) => {  
-      console.log(id);
-      console.log(hotSpots)
       this.setState({centerLocation: {
         lat: hotSpots[id].latitude,
         lng: hotSpots[id].longitudes,
@@ -157,6 +159,7 @@ class MapComponent extends Component {
       listId: id,
       showCurrentL: false,
       showListInfo: true,
+      zoomSize: 12.5,
     })
   }
     return (
@@ -173,7 +176,7 @@ class MapComponent extends Component {
           google={this.props.google}
           style={this.mapContainerStyle}
           styles={mapStyle}
-          zoom={14}
+          zoom={this.state.zoomSize}
           disableDefaultUI={true}
           zoomControl={true}
           streetViewControl={true}
@@ -181,8 +184,18 @@ class MapComponent extends Component {
             lat: this.state.centerLocation.lat,
             lng: this.state.centerLocation.lng,
           }}
+          initialCenter={{
+            lat: this.state.centerLocation.lat,
+            lng: this.state.centerLocation.lng,
+          }}
+          onZoomChanged = { (...pra) => {
+            console.log(pra)
+
+          }
+                      }
                    
         >
+          <Polygon />
           {hotSpots.map((hotSpot) =>  {
             return(              
                   <Marker
@@ -193,7 +206,9 @@ class MapComponent extends Component {
                       scaledSize: new window.google.maps.Size(60, 60),
                     }}
                     onClick={() => {
-                      this.setState({ selectedWifi: hotSpot, showSelectedWifi: true });
+                      this.setState({ 
+                        selectedWifi: hotSpot, showSelectedWifi: true,
+                       });
                        
                     }}
                     >
@@ -237,6 +252,7 @@ class MapComponent extends Component {
               }}
               onClose={() => {
                 this.setState({ showSelectedWifi: false });
+                
               }}
             >
               <div>
@@ -265,9 +281,24 @@ class MapComponent extends Component {
                 lng: this.state.centerLocation.latitude,
               }}
               onClose={() => {
-                this.setState({ showListInfo: false, centerLocation: {
-                  lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng
-                } });
+                confirmAlert({
+                  title: 'Return?',
+                  message: 'Do you want to show your current location?',
+                  buttons: [
+                    {
+                      label: 'Yes',
+                      onClick: () => this.setState({ showListInfo: false, centerLocation: {
+                        lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng
+                      } })
+                    },
+                    {
+                      label: 'No',
+                      onClick: () => this.setState({ showListInfo: false,})
+                    }
+                  ]
+                });
+
+                
               }}
             >
               <div>
