@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import MapComponent from "./components/MapComponent";
 import NavBar from "./styles/NavBar";
-import AddHotspotForm from "./components/AddHotspotForm";
-
 export class App extends Component {
   render() {
     // console.log(this.props.formDisplay)
@@ -11,6 +9,7 @@ export class App extends Component {
       <div>
         <NavBar />
         <MapComponent />
+        
       </div>
     );
   }

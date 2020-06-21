@@ -1,0 +1,54 @@
+.listArea {
+  position: fixed;
+  top: 60vh;
+  width: 100vw;
+  background-color: 	rgb(181, 198, 214);
+  scroll-behavior: auto;
+  overflow-y: scroll;
+  height: 100vh;
+}
+.list {
+  list-style-type: square;
+  color:rgb(181, 198, 214);
+}
+.font {
+  color: #ffffff;
+}
+.listItem {
+ position: relative;
+ top: 5vh;
+ justify-content: space-evenly;
+ margin-left: 10%;
+ margin-right: 10%;
+ border: 1px solid white;
+ background-color:#343a3f;
+ box-shadow: 5px 5px 5px black;
+ transition: .2s;
+ border-radius: 15px;
+}
+
+.itemName {
+  color: #ffffff;
+  width: 200px;
+  text-align: left;
+  margin-top: 20px;
+}
+
+.itemBorough{
+  text-align: right;
+  margin-top: -50px;
+  margin-left: -10px; 
+  color: #ffffff;
+}
+
+.itemSSID{
+  color: #ffffff;
+}
+
+.itemAddress{
+  color: #ffffff;
+  text-align: center;
+  margin-left: initial;
+  margin-top: -50px;
+  /* margin-right: 10px; */
+}
