@@ -8,23 +8,13 @@ export default class ListComponent extends Component {
     }
   }
   
-  
-  
-//   display = <p>Hello</p>;
-//   displayList = <div>
-//   <h1> hello</h1>
-//   <h2>its me</h2>
-// </div>
-
-
-  
   render(){
-    const displayList = this.props.wifiLists.map((place) => {
+    const displayList = this.props.wifiLists.map((place, id) => {
       return <div>
         <ul className="list">
           <li className = "listItem" 
           onClick= { () =>{
-            this.props.listMarker(place._id);
+            this.props.listMarker(id);
           }}
           >
             <p className = "itemSSID">{place.ssid}</p>
@@ -35,7 +25,7 @@ export default class ListComponent extends Component {
           </ul> 
         </div>
       });  
-    // console.log((this.props.wifiLists))
+
     return (
       <div className = "listArea">
         {displayList}

@@ -20,8 +20,10 @@ class MapComponent extends Component {
       pointedLocation: null,
       selectedWifi: [],
       currentLocation: [],
+      hotSpots: {},
+      hotSpotsData: [],
       rerender : 1,
-      defaultLocation: {
+      centerLocation: {
         lat: 40.7128,
         lng: -74.006,
       },
@@ -30,6 +32,8 @@ class MapComponent extends Component {
       loadError: null,
       showSelectedWifi: false,
       showCurrentL: true,
+      showListInfo: false,
+      selectedList: [],
     };
     this.getManhattanWifi = this.getManhattanWifi.bind(this)
     this.getQueensWifi = this.getQueensWifi.bind(this)
@@ -42,20 +46,10 @@ class MapComponent extends Component {
 
   mapContainerStyle = {
     width: "100vw",
-    height: "60vh",
+    height: "50vh",
   };
 
-  listMarker = (id) => {
-    console.log(id)
-    // this.setState({defaultLocation: {
-    //   lat: hotSpotData.default[id].Latitude,
-    //   lng: hotSpotData.default[id].Longitude,
-    // },
-    // listId: id,
-    // showHello: false,
-    // showListInfo: true,
-  // })
-}
+
           componentDidMount() {
 
             var foundBorough = null
@@ -65,15 +59,21 @@ class MapComponent extends Component {
             var boroughQ = "Queens";
             var boroughBx = "Bronx";
 
+
             navigator.geolocation.watchPosition((position) => {
               this.setState({
                 currentLocation: {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude,
                 },
+                centerLocation: {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                },
                 isLocated: true,
+                
               });
-
+              this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
 
               //Convert input location into borough
               const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
@@ -140,10 +140,25 @@ class MapComponent extends Component {
             this.props.getBronx();
           }
 
+
   render() {
-
     const { hotSpots } = this.props.hotSpot;
-
+    
+    // console.log(this.state.hotSpotsData)
+    // console.log(hotSpots[0])
+    const listMarker = (id) => {  
+      console.log(id);
+      console.log(hotSpots)
+      this.setState({centerLocation: {
+        lat: hotSpots[id].latitude,
+        lng: hotSpots[id].longitudes,
+      },
+      selectedList: hotSpots[id],
+      listId: id,
+      showCurrentL: false,
+      showListInfo: true,
+    })
+  }
     return (
       
       <div className = "map">
@@ -163,8 +178,8 @@ class MapComponent extends Component {
           zoomControl={true}
           streetViewControl={true}
           center={{
-            lat: this.state.currentLocation.lat,
-            lng: this.state.currentLocation.lng,
+            lat: this.state.centerLocation.lat,
+            lng: this.state.centerLocation.lng,
           }}
                    
         >
@@ -236,16 +251,45 @@ class MapComponent extends Component {
                   <li>Provider: {this.state.selectedWifi.provider}</li>
                   <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
-                  <li>Location-Type: outdoor</li>
+                  {/* <li>Location-Type: outdoor</li> */}
                 </ul>
                 
               </div>
             </InfoWindow>
-            
-         
-           
+          
+      {/* displays info window when list is being clicked  */}    
+            <InfoWindow
+              visible={this.state.showListInfo}
+              position={{
+                lat: this.state.centerLocation.latitude,
+                lng: this.state.centerLocation.latitude,
+              }}
+              onClose={() => {
+                this.setState({ showListInfo: false, centerLocation: {
+                  lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng
+                } });
+              }}
+            >
+              <div>
+                <b>
+                  <p>Wifi-Hotspot Info</p>
+                </b>
+                <ul>
+                  <li>Name: {this.state.selectedList.name}</li>
+                  <li>SSID: {this.state.selectedList.ssid}</li>
+                  <li>Location: {this.state.selectedList.location}</li>
+                  <li>ZipCode: {this.state.selectedList.zipcode}</li>
+                  <li>Provider: {this.state.selectedList.provider}</li>
+                  <li>Borough: {this.state.selectedList.boroughName}</li>
+                  <li>Wifi-Session: {this.state.selectedList.type}</li>
+                  {/* <li>Location-Type: outdoor</li> */}
+                </ul>
+                
+              </div>
+            </InfoWindow>
+            <ListComponent wifiLists = {hotSpots} listMarker = {listMarker}/>
+
         </Map>
-        <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
        
       </div>
     );
