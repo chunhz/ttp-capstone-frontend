@@ -53,7 +53,7 @@ class MapComponent extends Component {
             var boroughQ = "Queens";
             var boroughBx = "Bronx";
 
-
+            this.setState({ hotSpots:  this.props.hotSpot, })
             navigator.geolocation.watchPosition((position) => {
               this.setState({
                 currentLocation: {
@@ -65,7 +65,7 @@ class MapComponent extends Component {
                   lng: position.coords.longitude,
                 },
                 isLocated: true,
-                hotSpots:  this.props.hotSpot,
+                
               });
               this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
 
@@ -114,25 +114,28 @@ class MapComponent extends Component {
           }
 
 
-  listMarker = (id) => {  
+
+  render() {
+    const { hotSpots } = this.props.hotSpot;
+    
+    // console.log(this.state.hotSpotsData)
+    // console.log(hotSpots[0])
+    const listMarker = (id) => {  
       console.log(id);
+      console.log(hotSpots)
       this.setState({centerLocation: {
-        lat: this.state.hotSpotsData[id].latitude,
-        lng: this.state.hotSpotsData[id].longitudes,
+        lat: hotSpots[id].latitude,
+        lng: hotSpots[id].longitudes,
       },
-      selectedList: this.state.hotSpotsData[id],
+      selectedList: hotSpots[id],
       listId: id,
       showCurrentL: false,
       showListInfo: true,
     })
   }
-  render() {
-    // const { hotSpots } = this.props.hotSpot;
-    // console.log(this.state.hotSpotsData)
-    console.log(this.state.centerLocation)
     return (
 
-      <div className= "map">
+      <div className = "map">
         <Map
           google={this.props.google}
           style={this.mapContainerStyle}
@@ -147,7 +150,7 @@ class MapComponent extends Component {
           }}
                    
         >
-          {this.state.hotSpotsData.map((hotSpot) =>  {
+          {hotSpots.map((hotSpot) =>  {
             return(              
                   <Marker
                     key={hotSpot._id}
@@ -229,7 +232,9 @@ class MapComponent extends Component {
                 lng: this.state.centerLocation.latitude,
               }}
               onClose={() => {
-                this.setState({ showListInfo: false });
+                this.setState({ showListInfo: false, centerLocation: {
+                  lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng
+                } });
               }}
             >
               <div>
@@ -249,7 +254,7 @@ class MapComponent extends Component {
                 
               </div>
             </InfoWindow>
-            <ListComponent wifiLists = {this.state.hotSpotsData} listMarker = {this.listMarker}/>
+            <ListComponent wifiLists = {hotSpots} listMarker = {listMarker}/>
 
         </Map>
        
