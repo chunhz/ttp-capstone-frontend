@@ -67,7 +67,7 @@ class MapComponent extends Component {
                 isLocated: true,
                 hotSpots:  this.props.hotSpot,
               });
-
+              this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
 
               //Convert input location into borough
               const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
@@ -111,7 +111,6 @@ class MapComponent extends Component {
                       console.log(err)
                     }
             });
-          this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
           }
 
 
@@ -133,7 +132,7 @@ class MapComponent extends Component {
     console.log(this.state.centerLocation)
     return (
 
-      <div className = "map">
+      <div className= "map">
         <Map
           google={this.props.google}
           style={this.mapContainerStyle}
@@ -253,7 +252,6 @@ class MapComponent extends Component {
             <ListComponent wifiLists = {this.state.hotSpotsData} listMarker = {this.listMarker}/>
 
         </Map>
-        <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
        
       </div>
     );
