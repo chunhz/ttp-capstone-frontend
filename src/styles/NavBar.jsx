@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import AddHotspotForm from '../components/AddHotspotForm'
 import App from '../App'
+import '../styles/navStyle.css'
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   let formDisplay = false;
