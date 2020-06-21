@@ -3,7 +3,7 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import mapStyle from "../mapFolder/mapStyle";
 import icon from "../accessories/images/wifi-pointer-before-selected.png";
 import redPointer from "../accessories/images/red-pointer.png";
-import { getHotSpots, getCloseHotSpots } from "../actions/hotspotActions";
+import { getHotSpots, getCloseHotSpots, getManhattan,getQueens,getStatenIsland,getBrooklyn,getBronx } from "../actions/hotspotActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ListComponent from "./ListComponent";
@@ -31,6 +31,13 @@ class MapComponent extends Component {
       showSelectedWifi: false,
       showCurrentL: true,
     };
+    this.getManhattanWifi = this.getManhattanWifi.bind(this)
+    this.getQueensWifi = this.getQueensWifi.bind(this)
+    this.getStatenIslandWifi = this.getStatenIslandWifi.bind(this)
+    this.getBrooklynWifi = this.getBrooklynWifi.bind(this);
+    this.getBronxWifi = this.getBronxWifi.bind(this)
+
+
   }
 
   mapContainerStyle = {
@@ -51,14 +58,12 @@ class MapComponent extends Component {
 }
           componentDidMount() {
 
-
             var foundBorough = null
             var boroughBk = "Brooklyn";
             var boroughMan = "Manhattan";
             var boroughSI = "Staten Island"
             var boroughQ = "Queens";
             var boroughBx = "Bronx";
-
 
             navigator.geolocation.watchPosition((position) => {
               this.setState({
@@ -114,13 +119,40 @@ class MapComponent extends Component {
             });
           }
 
+
+          getManhattanWifi(){
+            this.props.getManhattan();
+          }
+
+          getQueensWifi(){
+            this.props.getQueens();
+          }
+
+          getStatenIslandWifi(){
+            this.props.getStatenIsland();
+          }
+
+          getBrooklynWifi(){
+            this.props.getBrooklyn();
+          }
+
+          getBronxWifi(){
+            this.props.getBronx();
+          }
+
   render() {
 
     const { hotSpots } = this.props.hotSpot;
 
     return (
-
+      
       <div className = "map">
+
+         <button onClick={this.getManhattanWifi} >Manhattan Wifi</button>
+         <button onClick={this.getBronxWifi} >Bronx Wifi</button>
+         <button onClick={this.getQueensWifi} >Queens Wifi</button>
+         <button onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
+         <button onClick={this.getBrooklynWifi} >Brooklyn Wifi</button>
         <Map
           google={this.props.google}
           style={this.mapContainerStyle}
@@ -228,7 +260,7 @@ const mapStateToProps = (state) => ({
   hotSpot: state.hotSpot,
 });
 
-export default connect(mapStateToProps, { getCloseHotSpots })(
+export default connect(mapStateToProps, { getCloseHotSpots,getManhattan,getQueens,getStatenIsland,getBrooklyn,getBronx })(
   GoogleApiWrapper({
     apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   })(MapComponent)
