@@ -222,7 +222,7 @@ class MapComponent extends Component {
               </div>
             </InfoWindow>
           
-  <!--   displays info window when list is being clicked   -->
+      {/* displays info window when list is being clicked  */}    
             <InfoWindow
               visible={this.state.showListInfo}
               position={{
