@@ -1,137 +1,182 @@
-import React from "react";
-import {
-  GoogleMap,
-  useLoadScript,
-  Marker,
-  InfoWindow,
-} from "@react-google-maps/api";
+import React, { Component } from "react";
+import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import mapStyle from "../mapFolder/mapStyle";
-import * as hotSpotData from "../data/NYCHotspot.json";
-import  icon  from '../accessories/images/wifi-pointer-before-selected.png';
-import redPointer from '../accessories/images/red-pointer.png';
+import icon from "../accessories/images/wifi-pointer-before-selected.png";
+import redPointer from "../accessories/images/red-pointer.png";
+import { getHotSpots } from "../actions/hotspotActions";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import hotspotForm from "./AddHotspotForm";
 
-function MapComponent() {
- 
-  const [markers, setMarkers] = React.useState([]);
-  const [pointedLocation, setPointedLocation] = React.useState([]);
-  const [selectedWifi, setSelectedWifi] = React.useState(null);
-  const [currentLocation, setCurrentLocation] = React.useState(null);
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-  });
+class MapComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      markers: null,
+      pointedLocation: null,
+      selectedWifi: [],
+      currentLocation: null,
+      rerender : 1,
+      defaultLocation: {
+        lat: 40.7128,
+        lng: -74.006,
+      },
+      isLocated: false,
+      isLoaded: null,
+      loadError: null,
+      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    };
+  }
+  //  const [markers, setMarkers] = React.useState([]);
+  //   const [pointedLocation, setPointedLocation] = React.useState([]);
+  //   const [selectedWifi, setSelectedWifi] = React.useState(null);
+  //   const [currentLocation, setCurrentLocation] = React.useState(null);
+  //   const { isLoaded, loadError } = useLoadScript({
+  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  // });
 
-  const mapContainerStyle = {
-    width: "70vw",
+  mapContainerStyle = {
+    width: "100vw",
     height: "70vh",
   };
-  const style = {
-    styles: mapStyle,
-    disableDefaultUI: true,
-    zoomControl: true,
-  };
 
-  navigator.geolocation.getCurrentPosition((position) => {
-    const currentLocation = {
-      lat: position.coords.latitude,
-      lng: position.coords.longitude
-    }
-    setCurrentLocation(currentLocation);
-  });
-
-  if (loadError) return "Error";
-  if (!isLoaded) return "Loading Maps";
-
-  const areaHotSpotData=[];
-  hotSpotData.default.map( ( hotSpot => {
-    if ((hotSpot.Latitude - pointedLocation.lat < 0.3 || hotSpot.Latitude - pointedLocation.lat < -0.3) && (hotSpot.Longitude - pointedLocation.lng < 0.3 || hotSpot.Longitude - pointedLocation.lng < -0.3)  ){
-      areaHotSpotData = hotSpot;
-      console.log(areaHotSpotData);
-    }
-
-  }))
-  const currentPosition = () => {
-    return <div>
-      {<InfoWindow 
-            lat = {currentLocation.lat}
-            lng = {currentLocation.lng}
-            content = {'You are here!'} 
-          />}
-    </div>
+  componentDidMount() {
+    navigator.geolocation.watchPosition((position) => {
+      this.setState({
+        defaultLocation: {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        },
+        // currentLat: position.coords.latitude,
+        // currentLng: position.coords.longitude,
+        isLocated: true,
+      });
+      // console.log(this.state.currentLat)
+      // console.log(this.state.currentLng)
+      // ,
+      this.props.getHotSpots();
+    });
   }
-  return (
-    <div>
-      <GoogleMap
-        mapContainerStyle={mapContainerStyle}
-        zoom={14}
-        options = {
-          style}
-        center={currentLocation}
-        width = {window.width}
-        height = {window.height}
-        onLoad={() => {
-          setMarkers((current) => [...current, {}]);
-        }}
-        onDragEnd  = { (lat, lng) => {
-          // setPointedLocation(current => [...current, {
-          //   lat: event.latlng.lat(),
-          //   lng: event.latlng.lng(),
-          // }])
-          const lat1 = lat;
-          console.log(lat1)
-      }}
-      >
-        
-        {hotSpotData.default.map((hotSpot) => (
-          <Marker
-            key={hotSpot.OBJECTID}
-            position={{ lat: hotSpot.Latitude, lng: hotSpot.Longitude }}
-            icon={{ 
-              url: icon,
-              scaledSize: new window.google.maps.Size(60,60),
-             }}
 
-        onClick= { () => {
-          setSelectedWifi(hotSpot);
-        }
-      }
-        
-        
-          />
-        ))}
-        {currentLocation && (
-          <div>
-          <InfoWindow position = {{ lat: currentLocation.lat, lng: currentLocation.lng}}>
-            <strong><h7>You are here!</h7></strong></InfoWindow>
-          <Marker 
-          position={{ lat: currentLocation.lat, lng: currentLocation.lng }}
-          icon={{ 
-            url: redPointer,
-            scaledSize: new window.google.maps.Size(50,50),
-           }}/>
-           </div>
-        )}
-        {selectedWifi && (
-          <InfoWindow
-            position={{ lat: selectedWifi.Latitude, lng: selectedWifi.Longitude }}
-            onCloseClick={() => {
-              setSelectedWifi(null);
-            }}
-          >
-            <div>
-              <b><p>Wifi-Hotspot Info</p></b>
-              <ul>
-                <li>SSID: {selectedWifi.SSID}</li>
-                <li>Provider: {selectedWifi.Provider}</li>
-                <li>Borough: {selectedWifi.City}</li>
-                <li>Wifi-Session: {selectedWifi.Type}</li>
-                <li>Location-Type: {selectedWifi.Location_T}</li>
-              </ul>
-            </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-    </div>
-  );
+  render() {
+
+
+
+  // X = latitude
+  // Y=  longtitudes
+    let i = 0;
+    let x = [];
+    let y = [];
+
+    const { hotSpots } = this.props.hotSpot;
+  
+    console.log(this.state.selectedWifi)
+
+    return (
+      <div>
+        <Map
+          google={this.props.google}
+          style={this.mapContainerStyle}
+          styles={mapStyle}
+          zoom={14}
+          disableDefaultUI={true}
+          zoomControl={true}
+          streetViewControl={true}
+          initialCenter={{
+            lat: this.state.defaultLocation.lat,
+            lng: this.state.defaultLocation.lng,
+          }}
+          
+          // initialCenter={{ lat: this.state.currentLat, lng: this.state.currentLng }}
+         
+        >
+          {/* {hotSpots.map((hotSpot) => {
+            console.log(hotSpot.city);
+          })} */}
+          {hotSpots.map((hotSpot) =>  {
+            return(              
+                  <Marker
+                    key={hotSpot._id}
+                    position={{ lat: hotSpot.latitude, lng: hotSpot.longitudes }}
+                    icon={{
+                      url: icon,
+                      scaledSize: new window.google.maps.Size(60, 60),
+                    }}
+                    onClick={() => {
+                      this.setState({ selectedWifi: hotSpot });
+                    }}
+                    >
+                      
+                    </Marker>
+            )
+          })}
+
+          {this.state.isLocated && (
+            <InfoWindow
+              visible={true}
+              position={{
+                lat: this.state.defaultLocation.lat,
+                lng: this.state.defaultLocation.lng,
+              }}
+              icon={{}}
+              onCloseClick={() => {
+                this.setState({ defaultLocation: null });
+              }}
+            >
+              <b>
+                <p>You're here!</p>
+              </b>
+            </InfoWindow>
+            // <Marker
+            // position={{ lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng }}
+            // icon={{
+            //   url: redPointer,
+            //   scaledSize: new window.google.maps.Size(60,60),
+            //  }}
+            // />
+          )}
+
+            <InfoWindow
+              visible={true}
+              position={{
+                lat: this.state.selectedWifi.latitude,
+                lng: this.state.selectedWifi.longitudes,
+              }}
+              onCloseClick={() => {
+                this.setState({ currentLocation: null });
+              }}
+            >
+              <div>
+                <b>
+                  <p>Wifi-Hotspot Info</p>
+                </b>
+                <ul>
+                  <li>SSID: {this.state.selectedWifi.ssid}</li>
+                  <li>Provider: {this.state.selectedWifi.provider}</li>
+                  <li>Borough: {this.state.selectedWifi.city}</li>
+                  <li>Wifi-Session: {this.state.selectedWifi.type}</li>
+                  <li>Location-Type: {this.state.selectedWifi.name}</li>
+                </ul>
+              </div>
+            </InfoWindow>
+          {/* )} */}
+        </Map>
+      </div>
+    );
+  }
 }
 
-export default MapComponent;
+MapComponent.propTypes = {
+  getHotSpots: PropTypes.func.isRequired,
+  hotSpot: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  hotSpot: state.hotSpot,
+});
+
+export default connect(mapStateToProps, { getHotSpots })(
+  GoogleApiWrapper({
+    apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+  })(MapComponent)
+);
