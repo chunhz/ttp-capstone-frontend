@@ -13,7 +13,7 @@ class MapComponent extends Component {
     this.state = {
       markers: null,
       pointedLocation: null,
-      selectedWifi: false,
+      selectedWifi: [],
       currentLocation: null,
       rerender : 1,
       defaultLocation: {
@@ -81,7 +81,6 @@ class MapComponent extends Component {
 
     // if (this.state.loadError) return "Error";
     // if (!this.state.isLoaded) return "Loading Maps";
-    console.log("is located " + this.state.isLocated);
     return (
       <div>
         <Map
@@ -98,13 +97,6 @@ class MapComponent extends Component {
           }}
           // initialCenter={{ lat: this.state.currentLat, lng: this.state.currentLng }}
 
-          onClick={(event) => {
-            // this.setState(current => [...current, {
-            //   lat: event.latLng.lat(),
-            //   lng: event.latLng.lng(),
-            // }])
-            // this.setState({ selectedWifi: true})
-          }}
         >
           {hotSpots.map(function(hotSpot, index )  {
             return(              
