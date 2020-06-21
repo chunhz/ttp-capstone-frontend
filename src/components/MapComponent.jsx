@@ -149,10 +149,11 @@ class MapComponent extends Component {
       <div className = "map">
 
          <button onClick={this.getManhattanWifi} >Manhattan Wifi</button>
-         <button onClick={this.getBronxWifi} >Bronx Wifi</button>
-         <button onClick={this.getQueensWifi} >Queens Wifi</button>
-         <button onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
          <button onClick={this.getBrooklynWifi} >Brooklyn Wifi</button>
+         <button onClick={this.getQueensWifi} >Queens Wifi</button>
+         <button onClick={this.getBronxWifi} >Bronx Wifi</button>
+         <button onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
+
         <Map
           google={this.props.google}
           style={this.mapContainerStyle}
