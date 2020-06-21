@@ -9,12 +9,12 @@ export default class ListComponent extends Component {
   }
   
   render(){
-    const displayList = this.props.wifiLists.map((place) => {
+    const displayList = this.props.wifiLists.map((place, id) => {
       return <div>
         <ul className="list">
           <li className = "listItem" 
           onClick= { () =>{
-            this.props.listMarker(place._id);
+            this.props.listMarker(id);
           }}
           >
             <p className = "itemSSID">{place.ssid}</p>
@@ -25,7 +25,7 @@ export default class ListComponent extends Component {
           </ul> 
         </div>
       });  
-    // console.log((this.props.wifiLists))
+
     return (
       <div className = "listArea">
         {displayList}

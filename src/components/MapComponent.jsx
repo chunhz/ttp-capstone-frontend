@@ -20,8 +20,10 @@ class MapComponent extends Component {
       pointedLocation: null,
       selectedWifi: [],
       currentLocation: [],
+      hotSpots: {},
+      hotSpotsData: [],
       rerender : 1,
-      defaultLocation: {
+      centerLocation: {
         lat: 40.7128,
         lng: -74.006,
       },
@@ -30,6 +32,8 @@ class MapComponent extends Component {
       loadError: null,
       showSelectedWifi: false,
       showCurrentL: true,
+      showListInfo: false,
+      selectedList: [],
     };
   }
 
@@ -38,17 +42,7 @@ class MapComponent extends Component {
     height: "50vh",
   };
 
-  listMarker = (id) => {
-    console.log(id)
-    // this.setState({defaultLocation: {
-    //   lat: hotSpotData.default[id].Latitude,
-    //   lng: hotSpotData.default[id].Longitude,
-    // },
-    // listId: id,
-    // showHello: false,
-    // showListInfo: true,
-  // })
-}
+
           componentDidMount() {
 
 
@@ -66,7 +60,12 @@ class MapComponent extends Component {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude,
                 },
+                centerLocation: {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                },
                 isLocated: true,
+                hotSpots:  this.props.hotSpot,
               });
 
 
@@ -112,12 +111,26 @@ class MapComponent extends Component {
                       console.log(err)
                     }
             });
+          this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
           }
 
+
+  listMarker = (id) => {  
+      console.log(id);
+      this.setState({centerLocation: {
+        lat: this.state.hotSpotsData[id].latitude,
+        lng: this.state.hotSpotsData[id].longitudes,
+      },
+      selectedList: this.state.hotSpotsData[id],
+      listId: id,
+      showCurrentL: false,
+      showListInfo: true,
+    })
+  }
   render() {
-
-    const { hotSpots } = this.props.hotSpot;
-
+    // const { hotSpots } = this.props.hotSpot;
+    // console.log(this.state.hotSpotsData)
+    console.log(this.state.centerLocation)
     return (
 
       <div className = "map">
@@ -130,12 +143,12 @@ class MapComponent extends Component {
           zoomControl={true}
           streetViewControl={true}
           center={{
-            lat: this.state.currentLocation.lat,
-            lng: this.state.currentLocation.lng,
+            lat: this.state.centerLocation.lat,
+            lng: this.state.centerLocation.lng,
           }}
                    
         >
-          {hotSpots.map((hotSpot) =>  {
+          {this.state.hotSpotsData.map((hotSpot) =>  {
             return(              
                   <Marker
                     key={hotSpot._id}
@@ -208,9 +221,37 @@ class MapComponent extends Component {
                 
               </div>
             </InfoWindow>
-            
-         
-           
+          
+  <!--   displays info window when list is being clicked   -->
+            <InfoWindow
+              visible={this.state.showListInfo}
+              position={{
+                lat: this.state.centerLocation.latitude,
+                lng: this.state.centerLocation.latitude,
+              }}
+              onClose={() => {
+                this.setState({ showListInfo: false });
+              }}
+            >
+              <div>
+                <b>
+                  <p>Wifi-Hotspot Info</p>
+                </b>
+                <ul>
+                  <li>Name: {this.state.selectedList.name}</li>
+                  <li>SSID: {this.state.selectedList.ssid}</li>
+                  <li>Location: {this.state.selectedList.location}</li>
+                  <li>ZipCode: {this.state.selectedList.zipcode}</li>
+                  <li>Provider: {this.state.selectedList.provider}</li>
+                  <li>Borough: {this.state.selectedList.boroughName}</li>
+                  <li>Wifi-Session: {this.state.selectedList.type}</li>
+                  {/* <li>Location-Type: outdoor</li> */}
+                </ul>
+                
+              </div>
+            </InfoWindow>
+            <ListComponent wifiLists = {this.state.hotSpotsData} listMarker = {this.listMarker}/>
+
         </Map>
         <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
        
