@@ -47,26 +47,14 @@ class MapComponent extends Component {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         },
-        // currentLat: position.coords.latitude,
-        // currentLng: position.coords.longitude,
         isLocated: true,
       });
-      // console.log(this.state.currentLat)
-      // console.log(this.state.currentLng)
-      // ,
+ 
       this.props.getHotSpots();
     });
   }
 
   render() {
-
-
-
-  // X = latitude
-  // Y=  longtitudes
-    let i = 0;
-    let x = [];
-    let y = [];
 
     const { hotSpots } = this.props.hotSpot;
   
@@ -159,7 +147,6 @@ class MapComponent extends Component {
                 </ul>
               </div>
             </InfoWindow>
-          {/* )} */}
         </Map>
       </div>
     );
