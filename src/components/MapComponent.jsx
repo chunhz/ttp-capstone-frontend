@@ -6,6 +6,7 @@ import redPointer from "../accessories/images/red-pointer.png";
 import { getHotSpots } from "../actions/hotspotActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import hotspotForm from "./AddHotspotForm";
 
 class MapComponent extends Component {
   constructor(props) {
@@ -13,7 +14,7 @@ class MapComponent extends Component {
     this.state = {
       markers: null,
       pointedLocation: null,
-      selectedWifi: false,
+      selectedWifi: [],
       currentLocation: null,
       rerender : 1,
       defaultLocation: {
@@ -69,19 +70,8 @@ class MapComponent extends Component {
 
     const { hotSpots } = this.props.hotSpot;
   
-      for(var key in hotSpots){
-        x[i] = (hotSpots[key].latitude)
-        // console.log("x" +x[i])
-        y[i] = (hotSpots[key].longitudes)
-        i++
-        // console.log("y" +y[i])
-      }
-   
+    console.log(this.state.selectedWifi)
 
-
-    // if (this.state.loadError) return "Error";
-    // if (!this.state.isLoaded) return "Loading Maps";
-    console.log("is located " + this.state.isLocated);
     return (
       <div>
         <Map
@@ -96,29 +86,26 @@ class MapComponent extends Component {
             lat: this.state.defaultLocation.lat,
             lng: this.state.defaultLocation.lng,
           }}
+          
           // initialCenter={{ lat: this.state.currentLat, lng: this.state.currentLng }}
-
-          onClick={(event) => {
-            // this.setState(current => [...current, {
-            //   lat: event.latLng.lat(),
-            //   lng: event.latLng.lng(),
-            // }])
-            // this.setState({ selectedWifi: true})
-          }}
+         
         >
-          {hotSpots.map(function(hotSpot, index )  {
+          {/* {hotSpots.map((hotSpot) => {
+            console.log(hotSpot.city);
+          })} */}
+          {hotSpots.map((hotSpot) =>  {
             return(              
                   <Marker
-                    key={index}
-                    position={{ lat: x[index], lng: y[index] }}
+                    key={hotSpot._id}
+                    position={{ lat: hotSpot.latitude, lng: hotSpot.longitudes }}
                     icon={{
                       url: icon,
                       scaledSize: new window.google.maps.Size(60, 60),
                     }}
-                  
                     onClick={() => {
                       this.setState({ selectedWifi: hotSpot });
-                    }}>
+                    }}
+                    >
                       
                     </Marker>
             )
@@ -148,12 +135,12 @@ class MapComponent extends Component {
             //  }}
             // />
           )}
-          {this.state.selectedWifi && (
+
             <InfoWindow
               visible={true}
               position={{
-                lat: this.state.selectedWifi.Latitude,
-                lng: this.state.selectedWifi.Longitude,
+                lat: this.state.selectedWifi.latitude,
+                lng: this.state.selectedWifi.longitudes,
               }}
               onCloseClick={() => {
                 this.setState({ currentLocation: null });
@@ -164,15 +151,15 @@ class MapComponent extends Component {
                   <p>Wifi-Hotspot Info</p>
                 </b>
                 <ul>
-                  <li>SSID: {this.state.selectedWifi.SSID}</li>
-                  <li>Provider: {this.state.selectedWifi.Provider}</li>
-                  <li>Borough: {this.state.selectedWifi.City}</li>
-                  <li>Wifi-Session: {this.state.selectedWifi.Type}</li>
-                  <li>Location-Type: {this.state.selectedWifi.Location_T}</li>
+                  <li>SSID: {this.state.selectedWifi.ssid}</li>
+                  <li>Provider: {this.state.selectedWifi.provider}</li>
+                  <li>Borough: {this.state.selectedWifi.city}</li>
+                  <li>Wifi-Session: {this.state.selectedWifi.type}</li>
+                  <li>Location-Type: {this.state.selectedWifi.name}</li>
                 </ul>
               </div>
             </InfoWindow>
-          )}
+          {/* )} */}
         </Map>
       </div>
     );
