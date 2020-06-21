@@ -53,7 +53,7 @@ class MapComponent extends Component {
             var boroughQ = "Queens";
             var boroughBx = "Bronx";
 
-
+            this.setState({ hotSpots:  this.props.hotSpot, })
             navigator.geolocation.watchPosition((position) => {
               this.setState({
                 currentLocation: {
@@ -65,9 +65,9 @@ class MapComponent extends Component {
                   lng: position.coords.longitude,
                 },
                 isLocated: true,
-                hotSpots:  this.props.hotSpot,
+                
               });
-
+              this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
 
               //Convert input location into borough
               const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
@@ -111,26 +111,28 @@ class MapComponent extends Component {
                       console.log(err)
                     }
             });
-          this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
           }
 
 
-  listMarker = (id) => {  
+
+  render() {
+    const { hotSpots } = this.props.hotSpot;
+    
+    // console.log(this.state.hotSpotsData)
+    // console.log(hotSpots[0])
+    const listMarker = (id) => {  
       console.log(id);
+      console.log(hotSpots)
       this.setState({centerLocation: {
-        lat: this.state.hotSpotsData[id].latitude,
-        lng: this.state.hotSpotsData[id].longitudes,
+        lat: hotSpots[id].latitude,
+        lng: hotSpots[id].longitudes,
       },
-      selectedList: this.state.hotSpotsData[id],
+      selectedList: hotSpots[id],
       listId: id,
       showCurrentL: false,
       showListInfo: true,
     })
   }
-  render() {
-    // const { hotSpots } = this.props.hotSpot;
-    // console.log(this.state.hotSpotsData)
-    console.log(this.state.centerLocation)
     return (
 
       <div className = "map">
@@ -148,7 +150,7 @@ class MapComponent extends Component {
           }}
                    
         >
-          {this.state.hotSpotsData.map((hotSpot) =>  {
+          {hotSpots.map((hotSpot) =>  {
             return(              
                   <Marker
                     key={hotSpot._id}
@@ -230,7 +232,9 @@ class MapComponent extends Component {
                 lng: this.state.centerLocation.latitude,
               }}
               onClose={() => {
-                this.setState({ showListInfo: false });
+                this.setState({ showListInfo: false, centerLocation: {
+                  lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng
+                } });
               }}
             >
               <div>
@@ -250,10 +254,9 @@ class MapComponent extends Component {
                 
               </div>
             </InfoWindow>
-            <ListComponent wifiLists = {this.state.hotSpotsData} listMarker = {this.listMarker}/>
+            <ListComponent wifiLists = {hotSpots} listMarker = {listMarker}/>
 
         </Map>
-        <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
        
       </div>
     );
