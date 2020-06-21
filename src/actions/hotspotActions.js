@@ -3,6 +3,8 @@ import {
   ADD_HOTSPOT,
   DEL_HOTSPOT,
   HOTSPOTS_LOADING,
+  GET_CLOSE,
+
 } from "./types";
 import axios from "axios";
 
@@ -15,6 +17,18 @@ export const getHotSpots = () => (dispatch) => {
     })
   );
 };
+
+
+export const getCloseHotSpots = (foundBorough) => (dispatch) => {
+  dispatch(setHotSpotsLoading());
+  axios.get(`/hotSpots/closeBy${foundBorough}` ).then((res) =>
+    dispatch({
+      type: GET_CLOSE,
+      payload: res.data,
+    })
+  );
+};
+
 
 export const delHotSpots = (id) => {
   return {

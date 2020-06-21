@@ -3,11 +3,15 @@ import { Map, GoogleApiWrapper, Marker, InfoWindow } from "google-maps-react";
 import mapStyle from "../mapFolder/mapStyle";
 import icon from "../accessories/images/wifi-pointer-before-selected.png";
 import redPointer from "../accessories/images/red-pointer.png";
-import { getHotSpots } from "../actions/hotspotActions";
+import { getHotSpots, getCloseHotSpots } from "../actions/hotspotActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ListComponent from "./ListComponent";
-import '../styles/mapStyle.css'
+import '../styles/mapStyle.css';
+import axios from "axios";
+
+
+
 class MapComponent extends Component {
   constructor(props) {
     super(props);
@@ -45,19 +49,70 @@ class MapComponent extends Component {
     // showListInfo: true,
   // })
 }
-  componentDidMount() {
-    navigator.geolocation.watchPosition((position) => {
-      this.setState({
-        currentLocation: {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude,
-        },
-        isLocated: true,
-      });
- 
-      this.props.getHotSpots();
-    });
-  }
+          componentDidMount() {
+
+
+            var foundBorough = null
+            var boroughBk = "Brooklyn";
+            var boroughMan = "Manhattan";
+            var boroughSI = "Staten Island"
+            var boroughQ = "Queens";
+            var boroughBx = "Bronx";
+
+
+            navigator.geolocation.watchPosition((position) => {
+              this.setState({
+                currentLocation: {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude,
+                },
+                isLocated: true,
+              });
+
+
+              //Convert input location into borough
+              const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+              axios
+                  .get(url)
+                  .then((response) =>{
+                    const data =response.data;
+                    console.log(data.results[0].address_components)
+                    //Get address
+                    let thelength  = data.results[0].address_components.length;
+                    console.log( thelength )    
+
+                    let i 
+
+                    //Loop until matches a borough name                    
+                    for( i = 0; i < thelength; i++)
+                    {
+                      if(foundBorough != null)
+                          break;
+                      if(data.results[0].address_components[i].long_name.includes(boroughBk ))
+                          foundBorough = boroughBk
+                      if(data.results[0].address_components[i].long_name.includes(boroughMan))
+                          foundBorough = boroughMan
+                      if(data.results[0].address_components[i].long_name.includes(boroughSI))
+                          foundBorough = boroughSI
+                      if(data.results[0].address_components[i].long_name.includes(boroughQ))
+                          foundBorough = boroughQ
+                      if(data.results[0].address_components[i].long_name.includes(boroughBx))
+                          foundBorough = boroughBx
+                    }
+                    console.log("FOUND " + foundBorough)
+                  })
+                          .catch((err) =>{
+                            console.log(err);
+                          })
+                    try{
+                          this.props.getCloseHotSpots(foundBorough);
+                    }
+                    catch(err)
+                    {
+                      console.log(err)
+                    }
+            });
+          }
 
   render() {
 
@@ -153,8 +208,11 @@ class MapComponent extends Component {
                 
               </div>
             </InfoWindow>
-            <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
+            
+         
+           
         </Map>
+        <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
        
       </div>
     );
@@ -162,7 +220,7 @@ class MapComponent extends Component {
 }
 
 MapComponent.propTypes = {
-  getHotSpots: PropTypes.func.isRequired,
+  getCloseHotSpots: PropTypes.func.isRequired,
   hotSpot: PropTypes.object.isRequired,
 };
 
@@ -170,7 +228,7 @@ const mapStateToProps = (state) => ({
   hotSpot: state.hotSpot,
 });
 
-export default connect(mapStateToProps, { getHotSpots })(
+export default connect(mapStateToProps, { getCloseHotSpots })(
   GoogleApiWrapper({
     apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   })(MapComponent)
