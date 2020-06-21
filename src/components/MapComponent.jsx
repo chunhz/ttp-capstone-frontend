@@ -31,7 +31,7 @@ class MapComponent extends Component {
 
   mapContainerStyle = {
     width: "100vw",
-    height: "60vh",
+    height: "50vh",
   };
 
   listMarker = (id) => {
@@ -80,7 +80,7 @@ class MapComponent extends Component {
           }}
                    
         >
-          {/* {hotSpots.map((hotSpot) =>  {
+          {hotSpots.map((hotSpot) =>  {
             return(              
                   <Marker
                     key={hotSpot._id}
@@ -96,7 +96,7 @@ class MapComponent extends Component {
                     >
                     </Marker>
             )
-          })} */}
+          })}
 
             {/* displays user's location dialouge by default */}
             <InfoWindow
