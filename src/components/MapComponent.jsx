@@ -153,8 +153,11 @@ class MapComponent extends Component {
                 
               </div>
             </InfoWindow>
-            <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
+            
+         
+           
         </Map>
+        <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
        
       </div>
     );
