@@ -8,16 +8,6 @@ export default class ListComponent extends Component {
     }
   }
   
-  
-  
-//   display = <p>Hello</p>;
-//   displayList = <div>
-//   <h1> hello</h1>
-//   <h2>its me</h2>
-// </div>
-
-
-  
   render(){
     const displayList = this.props.wifiLists.map((place) => {
       return <div>

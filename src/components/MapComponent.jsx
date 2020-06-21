@@ -148,7 +148,7 @@ class MapComponent extends Component {
                   <li>Provider: {this.state.selectedWifi.provider}</li>
                   <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
-                  <li>Location-Type: outdoor</li>
+                  {/* <li>Location-Type: outdoor</li> */}
                 </ul>
                 
               </div>
