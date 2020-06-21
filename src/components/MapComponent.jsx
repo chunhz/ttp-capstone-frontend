@@ -145,6 +145,7 @@ class MapComponent extends Component {
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
                   <li>Location-Type: {this.state.selectedWifi.name}</li>
                 </ul>
+                
               </div>
             </InfoWindow>
         </Map>
