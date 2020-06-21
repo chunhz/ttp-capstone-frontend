@@ -35,7 +35,7 @@ export default class ListComponent extends Component {
           </ul> 
         </div>
       });  
-    console.log((this.props.wifiLists))
+    // console.log((this.props.wifiLists))
     return (
       <div className = "listArea">
         {displayList}
