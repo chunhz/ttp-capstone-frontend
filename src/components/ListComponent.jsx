@@ -25,6 +25,7 @@ export default class ListComponent extends Component {
           </ul> 
         </div>
       });  
+
     return (
       <div className = "listArea">
         {displayList}

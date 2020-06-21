@@ -3,6 +3,7 @@ import {
   ADD_HOTSPOT,
   DEL_HOTSPOT,
   HOTSPOTS_LOADING,
+  GET_CLOSE,
 } from "../actions/types";
 
 const initialState = {
@@ -18,6 +19,12 @@ export default function (state = initialState, action) {
         hotSpots: action.payload,
         loading: false,
       };
+      case GET_CLOSE:
+        return {
+          ...state,
+          hotSpots: action.payload,
+          loading: false,
+        };
     case DEL_HOTSPOT:
       return {
         ...state,
