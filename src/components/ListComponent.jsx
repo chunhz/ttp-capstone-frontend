@@ -7,32 +7,38 @@ export default class ListComponent extends Component {
     this.state={
     }
   }
-  displayList = this.props.selectedWifi.map((place, id ) => {
-      // const displayList = 
-  return <div>
-    <ul className="list">
-      <li className = "listItem" onClick= { () =>{
-        this.props.locateMarker(id);
-      }}>
-        <p className = "itemName"  >{place.SSID} </p>
-        {/* <p className = "itemSSID"></p> */}
-        <p className = "itemDistance">{place.Location_T}</p>
-        <p className = "itemAddress">3921 street </p>
-        {/* <h1 className = "font">Hello</h1> */}
-      </li>
-      </ul>
-    </div>
-    
-    })
-  display = <p>Hello</p>;
+  
+  
+  
+//   display = <p>Hello</p>;
+//   displayList = <div>
+//   <h1> hello</h1>
+//   <h2>its me</h2>
+// </div>
 
 
-    
   
   render(){
+    const displayList = this.props.wifiLists.map((place) => {
+      return <div>
+        <ul className="list">
+          <li className = "listItem" 
+          onClick= { () =>{
+            this.props.listMarker(place._id);
+          }}
+          >
+            <p className = "itemSSID">{place.ssid}</p>
+            {/* <p className = "itemDistance">{place.Location_T}</p>  */}
+            <p className = "itemAddress">{place.location}</p> 
+            <p className = "itemBorough">{place.boroughName}</p>
+          </li> 
+          </ul> 
+        </div>
+      });  
+    console.log((this.props.wifiLists))
     return (
       <div className = "listArea">
-        {this.displayList}
+        {displayList}
       </div>
       
     )

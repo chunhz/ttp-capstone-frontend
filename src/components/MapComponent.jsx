@@ -6,8 +6,8 @@ import redPointer from "../accessories/images/red-pointer.png";
 import { getHotSpots } from "../actions/hotspotActions";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import hotspotForm from "./AddHotspotForm";
-
+import ListComponent from "./ListComponent";
+import '../styles/mapStyle.css'
 class MapComponent extends Component {
   constructor(props) {
     super(props);
@@ -15,7 +15,7 @@ class MapComponent extends Component {
       markers: null,
       pointedLocation: null,
       selectedWifi: [],
-      currentLocation: null,
+      currentLocation: [],
       rerender : 1,
       defaultLocation: {
         lat: 40.7128,
@@ -24,26 +24,31 @@ class MapComponent extends Component {
       isLocated: false,
       isLoaded: null,
       loadError: null,
-      googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+      showSelectedWifi: false,
+      showCurrentL: true,
     };
   }
-  //  const [markers, setMarkers] = React.useState([]);
-  //   const [pointedLocation, setPointedLocation] = React.useState([]);
-  //   const [selectedWifi, setSelectedWifi] = React.useState(null);
-  //   const [currentLocation, setCurrentLocation] = React.useState(null);
-  //   const { isLoaded, loadError } = useLoadScript({
-  //   googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-  // });
 
   mapContainerStyle = {
     width: "100vw",
-    height: "70vh",
+    height: "60vh",
   };
 
+  listMarker = (id) => {
+    console.log(id)
+    // this.setState({defaultLocation: {
+    //   lat: hotSpotData.default[id].Latitude,
+    //   lng: hotSpotData.default[id].Longitude,
+    // },
+    // listId: id,
+    // showHello: false,
+    // showListInfo: true,
+  // })
+}
   componentDidMount() {
     navigator.geolocation.watchPosition((position) => {
       this.setState({
-        defaultLocation: {
+        currentLocation: {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         },
@@ -57,11 +62,10 @@ class MapComponent extends Component {
   render() {
 
     const { hotSpots } = this.props.hotSpot;
-  
-    console.log(this.state.selectedWifi)
 
     return (
-      <div>
+
+      <div className = "map">
         <Map
           google={this.props.google}
           style={this.mapContainerStyle}
@@ -70,18 +74,13 @@ class MapComponent extends Component {
           disableDefaultUI={true}
           zoomControl={true}
           streetViewControl={true}
-          initialCenter={{
-            lat: this.state.defaultLocation.lat,
-            lng: this.state.defaultLocation.lng,
+          center={{
+            lat: this.state.currentLocation.lat,
+            lng: this.state.currentLocation.lng,
           }}
-          
-          // initialCenter={{ lat: this.state.currentLat, lng: this.state.currentLng }}
-         
+                   
         >
-          {/* {hotSpots.map((hotSpot) => {
-            console.log(hotSpot.city);
-          })} */}
-          {hotSpots.map((hotSpot) =>  {
+          {/* {hotSpots.map((hotSpot) =>  {
             return(              
                   <Marker
                     key={hotSpot._id}
@@ -91,47 +90,50 @@ class MapComponent extends Component {
                       scaledSize: new window.google.maps.Size(60, 60),
                     }}
                     onClick={() => {
-                      this.setState({ selectedWifi: hotSpot });
+                      this.setState({ selectedWifi: hotSpot, showSelectedWifi: true });
+                       
                     }}
                     >
-                      
                     </Marker>
             )
-          })}
+          })} */}
 
-          {this.state.isLocated && (
+            {/* displays user's location dialouge by default */}
             <InfoWindow
-              visible={true}
+              visible={this.state.showCurrentL}
               position={{
-                lat: this.state.defaultLocation.lat,
-                lng: this.state.defaultLocation.lng,
+                lat: this.state.currentLocation.lat,
+                lng: this.state.currentLocation.lng,
               }}
               icon={{}}
-              onCloseClick={() => {
-                this.setState({ defaultLocation: null });
+              onClose={() => {
+                this.setState({ showCurrentL: false });
               }}
             >
               <b>
                 <p>You're here!</p>
               </b>
             </InfoWindow>
-            // <Marker
-            // position={{ lat: this.state.defaultLocation.lat, lng: this.state.defaultLocation.lng }}
-            // icon={{
-            //   url: redPointer,
-            //   scaledSize: new window.google.maps.Size(60,60),
-            //  }}
-            // />
-          )}
+            <Marker
+            position={{ lat: this.state.currentLocation.lat, lng: this.state.currentLocation.lng }}
+            icon={{
+              url: redPointer,
+              scaledSize: new window.google.maps.Size(50,50),
+             }}
+             onClick = {(()=>{
+              this.setState({showCurrentL: true});
+             })}
+            />
 
+            {/* displays info window for wifi icon being clicked */}
             <InfoWindow
-              visible={true}
+              visible={this.state.showSelectedWifi}
               position={{
                 lat: this.state.selectedWifi.latitude,
                 lng: this.state.selectedWifi.longitudes,
               }}
-              onCloseClick={() => {
-                this.setState({ currentLocation: null });
+              onClose={() => {
+                this.setState({ showSelectedWifi: false });
               }}
             >
               <div>
@@ -139,16 +141,21 @@ class MapComponent extends Component {
                   <p>Wifi-Hotspot Info</p>
                 </b>
                 <ul>
+                  <li>Name: {this.state.selectedWifi.name}</li>
                   <li>SSID: {this.state.selectedWifi.ssid}</li>
+                  <li>Location: {this.state.selectedWifi.location}</li>
+                  <li>ZipCode: {this.state.selectedWifi.zipcode}</li>
                   <li>Provider: {this.state.selectedWifi.provider}</li>
-                  <li>Borough: {this.state.selectedWifi.city}</li>
+                  <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
-                  <li>Location-Type: {this.state.selectedWifi.name}</li>
+                  <li>Location-Type: outdoor</li>
                 </ul>
                 
               </div>
             </InfoWindow>
+            <ListComponent wifiLists = {hotSpots} listMarker = {this.listMarker}/>
         </Map>
+       
       </div>
     );
   }

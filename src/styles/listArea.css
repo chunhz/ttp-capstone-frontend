@@ -1,9 +1,11 @@
 .listArea {
-  position: absolute;
+  position: fixed;
   top: 60vh;
   width: 100vw;
   background-color: 	rgb(181, 198, 214);
-
+  scroll-behavior: auto;
+  overflow-y: scroll;
+  height: 100vh;
 }
 .list {
   list-style-type: square;
@@ -24,26 +26,29 @@
  transition: .2s;
  border-radius: 15px;
 }
+
 .itemName {
   color: #ffffff;
-  width: 100px;
+  width: 200px;
   text-align: left;
   margin-top: 20px;
 }
 
-.itemDistance{
-  text-align: center;
+.itemBorough{
+  text-align: right;
   margin-top: -50px;
-  margin-right: -10px; 
+  margin-left: -10px; 
   color: #ffffff;
-
 }
+
 .itemSSID{
   color: #ffffff;
 }
+
 .itemAddress{
   color: #ffffff;
-  text-align: right;
+  text-align: center;
+  margin-left: initial;
   margin-top: -50px;
   /* margin-right: 10px; */
 }
