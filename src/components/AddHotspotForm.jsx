@@ -11,7 +11,7 @@ export default class hotspotForm extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form">
         <Form className="hotspot-form">
           <h1 className="text-center">Add New Hotspot</h1>
           <FormGroup>

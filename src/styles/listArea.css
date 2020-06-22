@@ -52,7 +52,7 @@
 }
 .itemBorough{
   text-align: right;
-  margin-top: -40px;
+  margin-top: -50px;
   margin-right: 10px; 
   color: #edfdf5;
 }
@@ -68,8 +68,8 @@
   color: #edfdf5;
   text-align: center;
   margin-left: initial;
-  width: 300px;
-  margin-top: -40px;
+  width: 500px;
+  margin-top: -50px;
   margin-left: 35%;
   /* margin-right: 10px; */
 }
