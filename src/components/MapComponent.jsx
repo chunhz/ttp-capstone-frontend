@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Map, GoogleApiWrapper, Marker, InfoWindow, Polygon } from "google-maps-react";
+import { Map, GoogleApiWrapper, Marker, InfoWindow} from "google-maps-react";
 import mapStyle from "../mapFolder/mapStyle";
 import icon from "../accessories/images/wifi-pointer-before-selected.png";
 import redPointer from "../accessories/images/red-pointer.png";
@@ -122,31 +122,56 @@ class MapComponent extends Component {
                     }
             });
           }
-
-
           getManhattanWifi(){
             this.props.getManhattan();
+            this.setState({centerLocation: {
+              lat: 40.758896,
+              lng: -73.985130
+            }})
           }
 
           getQueensWifi(){
             this.props.getQueens();
+            this.setState({centerLocation: {
+              lat:  40.742054,
+              lng: -73.769417
+            }})
           }
 
           getStatenIslandWifi(){
             this.props.getStatenIsland();
+            this.setState({centerLocation: {
+              lat:  40.579021,
+              lng: -74.151535
+            }})
           }
 
           getBrooklynWifi(){
             this.props.getBrooklyn();
+            this.setState({centerLocation: {
+              lat:  40.650002, 
+              lng: -73.949997
+            }})
+            
           }
 
           getBronxWifi(){
             this.props.getBronx();
+            this.setState({centerLocation: {
+              lat:  40.837048,
+              lng:  -73.865433
+            }})
           }
+
+
+
+  
+
 
 
   render() {
     const { hotSpots } = this.props.hotSpot;
+    
     
     // console.log(this.state.hotSpotsData)
     // console.log(hotSpots[0])
@@ -164,13 +189,16 @@ class MapComponent extends Component {
     })
     console.log(this.state.draggable)
   }
+  
+    
+  
     return (
       
       <div className = "map">
         <div className ="boroughButtons">
-         <button className = "btn" onClick={this.getManhattanWifi} >Manhattan Wifi</button>
-         <button className = "btn" onClick={this.getBrooklynWifi} >Brooklyn Wifi</button>
-         <button className = "btn" nClick={this.getQueensWifi} >Queens Wifi</button>
+         <button className = "btn" onClick={this.getManhattanWifi}>Manhattan Wifi</button>
+         <button className = "btn" onClick={this.getBrooklynWifi}>Brooklyn Wifi</button>
+         <button className = "btn" nClick={this.getQueensWifi}>Queens Wifi</button>
          <button className = "btn" onClick={this.getBronxWifi} >Bronx Wifi</button>
          <button className = "btn" onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
          </div>
