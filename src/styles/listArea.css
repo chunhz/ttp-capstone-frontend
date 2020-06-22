@@ -1,6 +1,6 @@
 .listArea {
   position: fixed;
-  top: 59vh;
+  top: 65vh;
   width: 100vw;
   background-color: 	rgb(181, 198, 214);
   scroll-behavior: auto;
@@ -12,7 +12,7 @@
   color:rgb(181, 198, 214);
 }
 .font {
-  color: #ffffff;
+  color: rgb(198, 238, 216);
 }
 .listItem {
  position: relative;
@@ -21,39 +21,53 @@
  margin-left: 10%;
  margin-right: 10%;
  border: 1px solid white;
- background-color:#343a3f;
+ background-color:#424242;
  box-shadow: 5px 5px 5px black;
  transition: .2s;
  border-radius: 15px;
 }
 
 .itemName {
-  color: #ffffff;
+  color: rgb(188, 178, 233);
   width: 180px;
   text-align: left;
   margin-top: 20px;
   margin-right: 100px;
 }
+/* .itemName:hover {
+  color: rgb(188, 178, 233);
+}
 
+.itemAddress:hover {
+  color: rgb(188, 178, 233);
+}
+.itemBorough:hover {
+  color: rgb(188, 178, 233);
+} */
+.listItem:active {
+  background-color: #343a3f;
+  box-shadow: 0 5px #666;
+  transform: translateY(3px);
+}
 .itemBorough{
   text-align: right;
   margin-top: -50px;
   margin-right: 10px; 
-  color: #ffffff;
+  color: #edfdf5;
 }
 
 .itemSSID{
   text-align: left;
   margin-left: 10px;
-  color: #ffffff;
+  color: #edfdf5;
 }
 
 .itemAddress{
-  color: #ffffff;
+  color: #edfdf5;
   text-align: center;
   margin-left: initial;
   width: 300px;
   margin-top: -50px;
-  margin-left: 200px;
+  margin-left: 35%;
   /* margin-right: 10px; */
 }
