@@ -4,4 +4,15 @@
  padding:15px;
  margin: auto;
  height: 100%;
+ scroll-behavior: auto;
+ overflow-y: scroll;
+}
+.form{
+  overflow-y: scroll;
+  background-color: rgb(181, 198, 214);
+  
+}
+html, body {
+  margin: 0; height: 100%; overflow-y: scroll;
+  background-color: rgb(181, 198, 214);
 }
