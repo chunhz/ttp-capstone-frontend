@@ -37,8 +37,7 @@ class MapComponent extends Component {
       showListInfo: false,
       selectedList: [],
       zoomSize: 13,
-      foundZipCode : null
-
+      foundZipCode : null,
       draggable: true,
 
     };
@@ -183,7 +182,7 @@ class MapComponent extends Component {
          <button className = "btn" onClick={this.getQueensWifi}>Queens Wifi</button>
          <button className = "btn" onClick={this.getBronxWifi} >Bronx Wifi</button>
          <button className = "btn" onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
-              <button onClick={this.getClosestWifi}>Closest Wifi</button>
+         <button className = "btn" onClick={this.getClosestWifi}>Closest Wifi</button>
          </div>
 
         <Map
