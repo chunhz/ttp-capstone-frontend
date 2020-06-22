@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./form.css";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import {Link} from "react-router-dom";
 
 export default class hotspotForm extends Component {
   constructor(props) {
@@ -41,7 +42,8 @@ export default class hotspotForm extends Component {
             <Label for="exampleText">Location-Type</Label>
             <Input type="textarea" name="text" id="locationType" />
           </FormGroup>
-          <Button>Submit</Button>
+          {/* <Button>Submit</Button> */}
+          <Link to = '/' className ="btn btn-secondary" >Submit</Link>
         </Form>
       </div>
     );
