@@ -2,3 +2,32 @@
   position: fixed;
   top: 9vh;
 }
+.map .btn{
+  color: #edfdf5;
+  background-color: #424242;
+  border-color: white;
+}
+.map .boroughButtons {
+  color: rgb(198, 238, 216);
+  background-color: #ddeefc;
+  border-color: white;
+}
+.map .btn:hover{
+  color: rgb(188, 178, 233);
+}
+.map .btn:active {
+  background-color: #494949;
+  box-shadow: 0 5px #666;
+  transform: translateY(-3px);
+}
+
+.selectedList p {
+  color:rgb(23, 26, 24);
+  max-width: 250px;
+  max-height: 600px;
+}
+
+.btn{
+  color: #9FFFCB;
+  background-color: white;
+}

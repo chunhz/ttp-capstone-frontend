@@ -9,9 +9,8 @@ import PropTypes from "prop-types";
 import ListComponent from "./ListComponent";
 import '../styles/mapStyle.css';
 import axios from "axios";
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
-
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css'; 
 
 
 
@@ -38,6 +37,7 @@ class MapComponent extends Component {
       showListInfo: false,
       selectedList: [],
       zoomSize: 13,
+      draggable: true,
     };
     this.getManhattanWifi = this.getManhattanWifi.bind(this)
     this.getQueensWifi = this.getQueensWifi.bind(this)
@@ -155,23 +155,25 @@ class MapComponent extends Component {
         lat: hotSpots[id].latitude,
         lng: hotSpots[id].longitudes,
       },
+      draggable: false,
       selectedList: hotSpots[id],
-      listId: id,
       showCurrentL: false,
       showListInfo: true,
+      showSelectedWifi: false,
       zoomSize: 12.5,
     })
+    console.log(this.state.draggable)
   }
     return (
       
       <div className = "map">
-
-         <button onClick={this.getManhattanWifi} >Manhattan Wifi</button>
-         <button onClick={this.getBrooklynWifi} >Brooklyn Wifi</button>
-         <button onClick={this.getQueensWifi} >Queens Wifi</button>
-         <button onClick={this.getBronxWifi} >Bronx Wifi</button>
-         <button onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
-
+        <div className ="boroughButtons">
+         <button className = "btn" onClick={this.getManhattanWifi} >Manhattan Wifi</button>
+         <button className = "btn" onClick={this.getBrooklynWifi} >Brooklyn Wifi</button>
+         <button className = "btn" nClick={this.getQueensWifi} >Queens Wifi</button>
+         <button className = "btn" onClick={this.getBronxWifi} >Bronx Wifi</button>
+         <button className = "btn" onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
+         </div>
         <Map
           google={this.props.google}
           style={this.mapContainerStyle}
@@ -180,6 +182,7 @@ class MapComponent extends Component {
           disableDefaultUI={true}
           zoomControl={true}
           streetViewControl={true}
+          draggable={this.state.draggable}
           center={{
             lat: this.state.centerLocation.lat,
             lng: this.state.centerLocation.lng,
@@ -195,7 +198,6 @@ class MapComponent extends Component {
                       }
                    
         >
-          <Polygon />
           {hotSpots.map((hotSpot) =>  {
             return(              
                   <Marker
@@ -205,9 +207,16 @@ class MapComponent extends Component {
                       url: icon,
                       scaledSize: new window.google.maps.Size(60, 60),
                     }}
+                    disableAutoPan={true}
                     onClick={() => {
                       this.setState({ 
-                        selectedWifi: hotSpot, showSelectedWifi: true,
+                        selectedWifi: hotSpot,
+                        showSelectedWifi: true,
+                        showListInfo: false,
+                        draggable: true,
+                        centerLocation: {
+                          lat: hotSpot.latitude, lng: hotSpot.longitudes
+                        }
                        });
                        
                     }}
@@ -223,10 +232,11 @@ class MapComponent extends Component {
                 lat: this.state.currentLocation.lat,
                 lng: this.state.currentLocation.lng,
               }}
-              icon={{}}
+              options={{disableAutoPan: true}}
               onClose={() => {
                 this.setState({ showCurrentL: false });
               }}
+              styles = {{ height: "200px", width: "150px"}}
             >
               <b>
                 <p>You're here!</p>
@@ -250,12 +260,12 @@ class MapComponent extends Component {
                 lat: this.state.selectedWifi.latitude,
                 lng: this.state.selectedWifi.longitudes,
               }}
+              options={{disableAutoPan: true}}
               onClose={() => {
                 this.setState({ showSelectedWifi: false });
-                
               }}
             >
-              <div>
+              <div className = "selectedWifi">
                 <b>
                   <p>Wifi-Hotspot Info</p>
                 </b>
@@ -263,11 +273,12 @@ class MapComponent extends Component {
                   <li>Name: {this.state.selectedWifi.name}</li>
                   <li>SSID: {this.state.selectedWifi.ssid}</li>
                   <li>Location: {this.state.selectedWifi.location}</li>
-                  <li>ZipCode: {this.state.selectedWifi.zipcode}</li>
+                  <li>ZipCode: {this.state.selectedWifi.zipCode}</li>
                   <li>Provider: {this.state.selectedWifi.provider}</li>
                   <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
-                  {/* <li>Location-Type: outdoor</li> */}
+                  <li>Location Type: {this.state.selectedWifi.locationType}</li>
+                  <li>Location-Type: {this.state.locationType}</li>
                 </ul>
                 
               </div>
@@ -280,6 +291,7 @@ class MapComponent extends Component {
                 lat: this.state.centerLocation.latitude,
                 lng: this.state.centerLocation.latitude,
               }}
+              disableAutoPan = {true}
               onClose={() => {
                 confirmAlert({
                   title: 'Return?',
@@ -293,7 +305,7 @@ class MapComponent extends Component {
                     },
                     {
                       label: 'No',
-                      onClick: () => this.setState({ showListInfo: false,})
+                      onClick: () => this.setState({ showListInfo: false, draggable: true})
                     }
                   ]
                 });
@@ -301,27 +313,19 @@ class MapComponent extends Component {
                 
               }}
             >
-              <div>
+              <div className = "selectedList">
                 <b>
-                  <p>Wifi-Hotspot Info</p>
+                  <p>Hotspot is located here!</p>
                 </b>
-                <ul>
-                  <li>Name: {this.state.selectedList.name}</li>
-                  <li>SSID: {this.state.selectedList.ssid}</li>
                   <li>Location: {this.state.selectedList.location}</li>
-                  <li>ZipCode: {this.state.selectedList.zipcode}</li>
-                  <li>Provider: {this.state.selectedList.provider}</li>
-                  <li>Borough: {this.state.selectedList.boroughName}</li>
-                  <li>Wifi-Session: {this.state.selectedList.type}</li>
-                  {/* <li>Location-Type: outdoor</li> */}
-                </ul>
+                  <li>Wifi-Session: {this.state.selectedList.tylie}</li>
+
                 
               </div>
             </InfoWindow>
             <ListComponent wifiLists = {hotSpots} listMarker = {listMarker}/>
 
         </Map>
-       
       </div>
     );
   }
