@@ -330,7 +330,7 @@ class MapComponent extends Component {
                 </b>
                   <li>Location: {this.state.selectedList.location}</li>
 
-                  <li>Wifi-Session: {this.state.selectedList.tylie}</li>
+                  <li>Wifi-Session: {this.state.selectedList.type}</li>
 
                 
               </div>
