@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import MapComponent from "./components/MapComponent";
-// import NavBar from "./styles/NavBar";
+import NavBar from "./styles/NavBar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { NavigationBar } from './styles/BootStrapNav';
