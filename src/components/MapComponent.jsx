@@ -77,7 +77,7 @@ class MapComponent extends Component {
               this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
 
               //Convert input location into zip code
-              const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+              const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${ position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
               axios
                   .get(url)
                   .then((response) =>{
@@ -87,12 +87,21 @@ class MapComponent extends Component {
                     let thelength  = data.results[0].address_components.length;
                     console.log( thelength )    
                     
-                    this.setState({foundZipCode: data.results[0].address_components[thelength-1].long_name});
+                   
+                    //GET ZIPCODE
+                    if(  data.results[0].address_components[thelength-1].long_name.length == 5 &&  data.results[0].address_components[thelength-1].short_name.length == 5)
+                          this.setState({foundZipCode: data.results[0].address_components[thelength-1].long_name});
+                    else
+                              this.setState({foundZipCode: data.results[0].address_components[thelength-2].long_name});
+
+
+
                   })
                           .catch((err) =>{
                             console.log(err);
                           })
                     try{
+                          console.log("Found ZipCode " + this.state.foundZipCode)
                           this.props.getCloseHotSpots(this.state.foundZipCode);
                     }
                     catch(err)
