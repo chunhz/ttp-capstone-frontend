@@ -25,10 +25,10 @@ export const getHotSpots = () => (dispatch) => {
   );
 };
 
-//GET Wifi by borough
-export const getCloseHotSpots = (foundBorough) => (dispatch) => {
+//GET Closest wifi by zipcode
+export const getCloseHotSpots = (Postcode) => (dispatch) => {
   dispatch(setHotSpotsLoading());
-  axios.get(`/hotSpots/closeBy${foundBorough}` ).then((res) =>
+  axios.get(`/hotSpots/closeBy${Postcode}` ).then((res) =>
     dispatch({
       type: GET_CLOSE,
       payload: res.data,

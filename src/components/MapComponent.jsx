@@ -38,12 +38,14 @@ class MapComponent extends Component {
       showListInfo: false,
       selectedList: [],
       zoomSize: 13,
+      foundZipCode : null
     };
     this.getManhattanWifi = this.getManhattanWifi.bind(this)
     this.getQueensWifi = this.getQueensWifi.bind(this)
     this.getStatenIslandWifi = this.getStatenIslandWifi.bind(this)
     this.getBrooklynWifi = this.getBrooklynWifi.bind(this);
     this.getBronxWifi = this.getBronxWifi.bind(this)
+    this.getClosestWifi = this.getClosestWifi.bind(this);
 
 
   }
@@ -56,7 +58,8 @@ class MapComponent extends Component {
 
           componentDidMount() {
 
-            var foundBorough = null
+            // var foundCloseBy = null
+            var foundBorough =null
             var boroughBk = "Brooklyn";
             var boroughMan = "Manhattan";
             var boroughSI = "Staten Island"
@@ -79,7 +82,7 @@ class MapComponent extends Component {
               });
               this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
 
-              //Convert input location into borough
+              //Convert input location into zip code
               const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
               axios
                   .get(url)
@@ -89,32 +92,14 @@ class MapComponent extends Component {
                     //Get address
                     let thelength  = data.results[0].address_components.length;
                     console.log( thelength )    
-
-                    let i 
-
-                    //Loop until matches a borough name                    
-                    for( i = 0; i < thelength; i++)
-                    {
-                      if(foundBorough != null)
-                          break;
-                      if(data.results[0].address_components[i].long_name.includes(boroughBk ))
-                          foundBorough = boroughBk
-                      if(data.results[0].address_components[i].long_name.includes(boroughMan))
-                          foundBorough = boroughMan
-                      if(data.results[0].address_components[i].long_name.includes(boroughSI))
-                          foundBorough = boroughSI
-                      if(data.results[0].address_components[i].long_name.includes(boroughQ))
-                          foundBorough = boroughQ
-                      if(data.results[0].address_components[i].long_name.includes(boroughBx))
-                          foundBorough = boroughBx
-                    }
-                    console.log("FOUND " + foundBorough)
+                    
+                    this.setState({foundZipCode: data.results[0].address_components[thelength-1].long_name});
                   })
                           .catch((err) =>{
                             console.log(err);
                           })
                     try{
-                          this.props.getCloseHotSpots(foundBorough);
+                          this.props.getCloseHotSpots(this.state.foundZipCode);
                     }
                     catch(err)
                     {
@@ -144,12 +129,14 @@ class MapComponent extends Component {
             this.props.getBronx();
           }
 
+          getClosestWifi(){
+            this.props.getCloseHotSpots(this.state.foundZipCode);
+          }
+
 
   render() {
     const { hotSpots } = this.props.hotSpot;
-    
-    // console.log(this.state.hotSpotsData)
-    // console.log(hotSpots[0])
+
     const listMarker = (id) => {  
       this.setState({centerLocation: {
         lat: hotSpots[id].latitude,
@@ -171,6 +158,7 @@ class MapComponent extends Component {
          <button onClick={this.getQueensWifi} >Queens Wifi</button>
          <button onClick={this.getBronxWifi} >Bronx Wifi</button>
          <button onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
+         <button onClick={this.getClosestWifi}>Closest Wifi</button>
 
         <Map
           google={this.props.google}
@@ -263,7 +251,7 @@ class MapComponent extends Component {
                   <li>Name: {this.state.selectedWifi.name}</li>
                   <li>SSID: {this.state.selectedWifi.ssid}</li>
                   <li>Location: {this.state.selectedWifi.location}</li>
-                  <li>ZipCode: {this.state.selectedWifi.zipcode}</li>
+                  <li>ZipCode: {this.state.selectedWifi.zipCode}</li>
                   <li>Provider: {this.state.selectedWifi.provider}</li>
                   <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
@@ -309,7 +297,7 @@ class MapComponent extends Component {
                   <li>Name: {this.state.selectedList.name}</li>
                   <li>SSID: {this.state.selectedList.ssid}</li>
                   <li>Location: {this.state.selectedList.location}</li>
-                  <li>ZipCode: {this.state.selectedList.zipcode}</li>
+                  <li>ZipCode: {this.state.selectedList.zipCode}</li>
                   <li>Provider: {this.state.selectedList.provider}</li>
                   <li>Borough: {this.state.selectedList.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedList.type}</li>
