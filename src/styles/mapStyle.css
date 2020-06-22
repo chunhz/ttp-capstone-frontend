@@ -1,6 +1,7 @@
 .map{
   position: absolute;
-  top: 7vh;
+  top: 9.5vh;
+  scroll-behavior: unset;
 }
 .map .btn{
   color: #edfdf5;
@@ -30,4 +31,8 @@
 .btn{
   color: #9FFFCB;
   background-color: white;
+}
+.map body {
+  margin: 0; height: 100%; overflow: hidden;
+  background-color: rgb(181, 198, 214);
 }
