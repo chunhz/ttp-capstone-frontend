@@ -88,7 +88,7 @@ class MapComponent extends Component {
                     
                    
                     //GET ZIPCODE
-                    if(  data.results[0].address_components[thelength-1].long_name.length == 5 &&  data.results[0].address_components[thelength-1].short_name.length == 5)
+                    if(  data.results[0].address_components[thelength-1].long_name.length === 5 &&  data.results[0].address_components[thelength-1].short_name.length === 5)
                           this.setState({foundZipCode: data.results[0].address_components[thelength-1].long_name});
                     else
                               this.setState({foundZipCode: data.results[0].address_components[thelength-2].long_name});
@@ -172,7 +172,6 @@ class MapComponent extends Component {
     const { hotSpots } = this.props.hotSpot;
 
     const listMarker = (id) => {  
-      if(this.state.draggable = true)
       this.setState({centerLocation: {
         lat: hotSpots[id].latitude,
         lng: hotSpots[id].longitudes,
@@ -219,11 +218,11 @@ class MapComponent extends Component {
             lat: this.state.centerLocation.lat,
             lng: this.state.centerLocation.lng,
           }}
-          onZoomChanged = { (...pra) => {
-            console.log(pra)
+          // onZoomChanged = { (...pra) => {
+          //   console.log(pra)
 
-          }
-                      }
+          // }
+                      // }
                    
         >
           {hotSpots.map((hotSpot) =>  {

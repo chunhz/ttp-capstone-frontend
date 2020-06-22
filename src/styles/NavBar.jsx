@@ -16,7 +16,7 @@ import {
 import MapComponent from "../components/MapComponent";
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+
   
   return (
     <Router>
