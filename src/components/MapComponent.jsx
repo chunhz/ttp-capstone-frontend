@@ -114,7 +114,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat: 40.758896,
               lng: -73.985130
-            }})
+            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
           }
 
           getQueensWifi(){
@@ -122,7 +122,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.742054,
               lng: -73.769417
-            }})
+            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
           }
 
           getStatenIslandWifi(){
@@ -130,7 +130,9 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.579021,
               lng: -74.151535
-            }})
+            },
+            showListInfo:false,showCurrentL:false,showSelectedWifi:false
+          })
           }
 
           getBrooklynWifi(){
@@ -138,7 +140,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.650002, 
               lng: -73.949997
-            }})
+            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
             
           }
 
@@ -147,7 +149,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.837048,
               lng:  -73.865433
-            }})
+            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
           }
 
           getClosestWifi(){
@@ -155,7 +157,9 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  this.state.currentLocation.lat, 
               lng:  this.state.currentLocation.lng
-            }})
+            },
+            showCurrentL:true, showListInfo:false, showSelectedWifiL: false,
+          })
           }
 
 
@@ -168,6 +172,7 @@ class MapComponent extends Component {
     const { hotSpots } = this.props.hotSpot;
 
     const listMarker = (id) => {  
+      if(this.state.draggable = true)
       this.setState({centerLocation: {
         lat: hotSpots[id].latitude,
         lng: hotSpots[id].longitudes,
@@ -235,13 +240,13 @@ class MapComponent extends Component {
                       this.setState({ 
                         selectedWifi: hotSpot,
                         showSelectedWifi: true,
+                        showCurrentL: false,
                         showListInfo: false,
                         draggable: true,
                         centerLocation: {
                           lat: hotSpot.latitude, lng: hotSpot.longitudes
                         }
                        });
-                       
                     }}
                     >
                     </Marker>
@@ -314,6 +319,9 @@ class MapComponent extends Component {
                 lng: this.state.centerLocation.latitude,
               }}
               disableAutoPan = {true}
+              onZoomChanged={()=>{
+                this.setState({showListInfo: false,})
+              }}
               onClose={() => {
                 confirmAlert({
                   title: 'Return?',
