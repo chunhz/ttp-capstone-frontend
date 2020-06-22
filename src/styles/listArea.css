@@ -29,19 +29,22 @@
 
 .itemName {
   color: #ffffff;
-  width: 200px;
+  width: 180px;
   text-align: left;
   margin-top: 20px;
+  margin-right: 100px;
 }
 
 .itemBorough{
   text-align: right;
   margin-top: -50px;
-  margin-left: -10px; 
+  margin-right: 10px; 
   color: #ffffff;
 }
 
 .itemSSID{
+  text-align: left;
+  margin-left: 10px;
   color: #ffffff;
 }
 
@@ -49,6 +52,8 @@
   color: #ffffff;
   text-align: center;
   margin-left: initial;
+  width: 300px;
   margin-top: -50px;
+  margin-left: 200px;
   /* margin-right: 10px; */
 }
