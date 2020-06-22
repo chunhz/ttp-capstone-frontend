@@ -1,6 +1,6 @@
 .map{
-  position: fixed;
-  top: 9vh;
+  position: absolute;
+  top: 7vh;
 }
 .map .btn{
   color: #edfdf5;
