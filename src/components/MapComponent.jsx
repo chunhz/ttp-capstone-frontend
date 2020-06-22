@@ -198,7 +198,7 @@ class MapComponent extends Component {
         <div className ="boroughButtons">
          <button className = "btn" onClick={this.getManhattanWifi}>Manhattan Wifi</button>
          <button className = "btn" onClick={this.getBrooklynWifi}>Brooklyn Wifi</button>
-         <button className = "btn" nClick={this.getQueensWifi}>Queens Wifi</button>
+         <button className = "btn" onClick={this.getQueensWifi}>Queens Wifi</button>
          <button className = "btn" onClick={this.getBronxWifi} >Bronx Wifi</button>
          <button className = "btn" onClick={this.getStatenIslandWifi} >Staten Island Wifi</button>
          </div>
