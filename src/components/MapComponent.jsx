@@ -48,6 +48,7 @@ class MapComponent extends Component {
     this.getBronxWifi = this.getBronxWifi.bind(this)
     this.getClosestWifi = this.getClosestWifi.bind(this);
 
+
   }
 
   mapContainerStyle = {
@@ -88,7 +89,7 @@ class MapComponent extends Component {
                     
                    
                     //GET ZIPCODE
-                    if(  data.results[0].address_components[thelength-1].long_name.length === 5 &&  data.results[0].address_components[thelength-1].short_name.length === 5)
+                    if(  data.results[0].address_components[thelength-1].long_name.length == 5 &&  data.results[0].address_components[thelength-1].short_name.length == 5)
                           this.setState({foundZipCode: data.results[0].address_components[thelength-1].long_name});
                     else
                               this.setState({foundZipCode: data.results[0].address_components[thelength-2].long_name});
@@ -114,7 +115,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat: 40.758896,
               lng: -73.985130
-            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
+            }})
           }
 
           getQueensWifi(){
@@ -122,7 +123,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.742054,
               lng: -73.769417
-            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
+            }})
           }
 
           getStatenIslandWifi(){
@@ -130,9 +131,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.579021,
               lng: -74.151535
-            },
-            showListInfo:false,showCurrentL:false,showSelectedWifi:false
-          })
+            }})
           }
 
           getBrooklynWifi(){
@@ -140,7 +139,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.650002, 
               lng: -73.949997
-            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
+            }})
             
           }
 
@@ -149,17 +148,11 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.837048,
               lng:  -73.865433
-            },showListInfo:false,showCurrentL:false,showSelectedWifi:false})
+            }})
           }
 
           getClosestWifi(){
             this.props.getCloseHotSpots(this.state.foundZipCode);
-            this.setState({centerLocation: {
-              lat:  this.state.currentLocation.lat, 
-              lng:  this.state.currentLocation.lng
-            },
-            showCurrentL:true, showListInfo:false, showSelectedWifiL: false,
-          })
           }
 
 
@@ -218,11 +211,11 @@ class MapComponent extends Component {
             lat: this.state.centerLocation.lat,
             lng: this.state.centerLocation.lng,
           }}
-          // onZoomChanged = { (...pra) => {
-          //   console.log(pra)
+          onZoomChanged = { (...pra) => {
+            console.log(pra)
 
-          // }
-                      // }
+          }
+                      }
                    
         >
           {hotSpots.map((hotSpot) =>  {
@@ -239,13 +232,13 @@ class MapComponent extends Component {
                       this.setState({ 
                         selectedWifi: hotSpot,
                         showSelectedWifi: true,
-                        showCurrentL: false,
                         showListInfo: false,
                         draggable: true,
                         centerLocation: {
                           lat: hotSpot.latitude, lng: hotSpot.longitudes
                         }
                        });
+                       
                     }}
                     >
                     </Marker>
@@ -304,7 +297,8 @@ class MapComponent extends Component {
                   <li>Provider: {this.state.selectedWifi.provider}</li>
                   <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
-                  <li>Location-Type: {this.state.selectedWifi.locationType}</li>
+                  <li>Location Type: {this.state.selectedWifi.locationType}</li>
+                  <li>Location-Type: {this.state.locationType}</li>
                 </ul>
                 
               </div>
@@ -318,9 +312,6 @@ class MapComponent extends Component {
                 lng: this.state.centerLocation.latitude,
               }}
               disableAutoPan = {true}
-              onZoomChanged={()=>{
-                this.setState({showListInfo: false,})
-              }}
               onClose={() => {
                 confirmAlert({
                   title: 'Return?',
@@ -347,6 +338,7 @@ class MapComponent extends Component {
                   <p>Hotspot is located here!</p>
                 </b>
                   <li>Location: {this.state.selectedList.location}</li>
+
                   <li>Wifi-Session: {this.state.selectedList.type}</li>
 
                 
