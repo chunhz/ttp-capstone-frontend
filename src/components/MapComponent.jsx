@@ -48,7 +48,6 @@ class MapComponent extends Component {
     this.getBronxWifi = this.getBronxWifi.bind(this)
     this.getClosestWifi = this.getClosestWifi.bind(this);
 
-
   }
 
   mapContainerStyle = {
@@ -153,6 +152,10 @@ class MapComponent extends Component {
 
           getClosestWifi(){
             this.props.getCloseHotSpots(this.state.foundZipCode);
+            this.setState({centerLocation: {
+              lat:  this.state.currentLocation.lat, 
+              lng:  this.state.currentLocation.lng
+            }})
           }
 
 
@@ -297,8 +300,7 @@ class MapComponent extends Component {
                   <li>Provider: {this.state.selectedWifi.provider}</li>
                   <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
-                  <li>Location Type: {this.state.selectedWifi.locationType}</li>
-                  <li>Location-Type: {this.state.locationType}</li>
+                  <li>Location-Type: {this.state.selectedWifi.locationType}</li>
                 </ul>
                 
               </div>
@@ -338,7 +340,6 @@ class MapComponent extends Component {
                   <p>Hotspot is located here!</p>
                 </b>
                   <li>Location: {this.state.selectedList.location}</li>
-
                   <li>Wifi-Session: {this.state.selectedList.type}</li>
 
                 
