@@ -115,7 +115,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat: 40.758896,
               lng: -73.985130
-            }})
+            },showCurrentL:false, showListInfo:false, showSelectedWifiL: false,})
           }
 
           getQueensWifi(){
@@ -123,7 +123,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.742054,
               lng: -73.769417
-            }})
+            },showCurrentL:false, showListInfo:false, showSelectedWifiL: false,})
           }
 
           getStatenIslandWifi(){
@@ -131,7 +131,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.579021,
               lng: -74.151535
-            }})
+            },showCurrentL:false, showListInfo:false, showSelectedWifiL: false,})
           }
 
           getBrooklynWifi(){
@@ -139,7 +139,7 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.650002, 
               lng: -73.949997
-            }})
+            },showCurrentL:false, showListInfo:false, showSelectedWifiL: false,})
             
           }
 
@@ -148,11 +148,17 @@ class MapComponent extends Component {
             this.setState({centerLocation: {
               lat:  40.837048,
               lng:  -73.865433
-            }})
+            },showCurrentL:false, showListInfo:false, showSelectedWifiL: false,})
           }
 
           getClosestWifi(){
             this.props.getCloseHotSpots(this.state.foundZipCode);
+            this.setState({centerLocation: {
+              lat:  this.state.currentLocation.lat, 
+              lng:  this.state.currentLocation.lng
+            },
+            showCurrentL:true, showListInfo:false, showSelectedWifiL: false,
+          })
           }
 
 
