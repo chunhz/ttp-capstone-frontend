@@ -1,5 +1,5 @@
 
-import React from "react";
+import React,{Component} from "react";
 import { Nav, Navbar, Form, FormControl } from "react-bootstrap";
 import styled from "styled-components";
 
@@ -62,7 +62,10 @@ return(
       </Navbar.Collapse>
     </Navbar>
   </Styles>
-
+  </div>
 
 );
 
+      }
+    }  
+    export default BootStrapNav;
