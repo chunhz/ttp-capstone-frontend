@@ -5,10 +5,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import  BootStrapNav  from './styles/BootStrapNav.js';
 import AddHotspotForm from './components/AddHotspotForm'
+
 export class App extends Component {
   render() {
-    // console.log(this.props.formDisplay)
-    // let displayForm = true ;
+
     return (
       <div>
         {/* <NavBar /> */}
