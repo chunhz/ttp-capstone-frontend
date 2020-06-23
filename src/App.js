@@ -8,8 +8,7 @@ import AddHotspotForm from './components/AddHotspotForm'
 
 export class App extends Component {
   render() {
-    // console.log(this.props.formDisplay)
-    // let displayForm = true ;
+
     return (
       <div>
         {/* <NavBar /> */}
