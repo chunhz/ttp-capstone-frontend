@@ -14,10 +14,12 @@ import {
   Route,
 } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
+
+
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
-  
+
   return (
     <Router>
     <div>

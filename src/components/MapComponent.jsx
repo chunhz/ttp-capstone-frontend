@@ -11,7 +11,17 @@ import '../styles/mapStyle.css';
 import axios from "axios";
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
-
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from "use-places-autocomplete";
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from "@reach/combobox";
 
 
 class MapComponent extends Component {
@@ -39,7 +49,7 @@ class MapComponent extends Component {
       zoomSize: 13,
       foundZipCode : null,
       draggable: true,
-
+      address: '',
     };
     this.getManhattanWifi = this.getManhattanWifi.bind(this)
     this.getQueensWifi = this.getQueensWifi.bind(this)
@@ -161,9 +171,26 @@ class MapComponent extends Component {
           })
           }
 
+          // handleChange = address => {
+          //   this.setState({ address });
+          // };
+          
+          // handleSelect = address => {
+          //   geocodeByAddress(address)
+          //     .then(results => getLatLng(results[0]))
+          //     .then(latLng => console.log('Success', latLng))
+          //     .catch(error => console.error('Error', error));
+          // };
 
-
-  
+          panTo = (la, lg) =>{
+            console.log("in map"+la+lg )
+            // this.setState({
+            //   centerLocation: {
+            //     lat: la,
+            //     lng: lg
+            //   }
+            // })
+          }
 
 
 
@@ -201,6 +228,7 @@ class MapComponent extends Component {
          </div>
 
         <Map
+          visible = {true} //1111
           google={this.props.google}
           style={this.mapContainerStyle}
           styles={mapStyle}
@@ -353,10 +381,48 @@ class MapComponent extends Component {
             <ListComponent wifiLists = {hotSpots} listMarker = {listMarker}/>
 
         </Map>
-      </div>
+        <SearchBar/>
+        </div>
     );
   }
 }
+
+
+{/* <PlacesAutocomplete
+        value={this.state.address}
+        onChange={this.handleChange}
+        onSelect={this.handleSelect}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading}) => (
+          <div className="searchBar">
+          <input {...getInputProps({placeholder: "Search address here",className: 'location-search-input',})}/>
+          <div className="autocomplete-dropdown-container">
+              {loading && <div>Loading...</div>}
+              {suggestions.map(suggestion => {
+                const className = suggestion.active
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+        </div>
+        
+        )}
+        </PlacesAutocomplete> */}
+     
 
 MapComponent.propTypes = {
   getCloseHotSpots: PropTypes.func.isRequired,
@@ -372,3 +438,63 @@ export default connect(mapStateToProps, { getCloseHotSpots,getManhattan,getQueen
     apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   })(MapComponent)
 );
+
+
+function SearchBar({ recenter }) {
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      location: { 
+        lat: ()=> 40.7128,
+        lng: ()=> -74.006, },
+      radius: 2000,
+    },
+  });
+
+  // https://developers.google.com/maps/documentation/javascript/reference/places-autocomplete-service#AutocompletionRequest
+
+  const handleInput = (e) => {
+    setValue(e.target.value);
+  };
+
+  const handleSelect = async (address) => {
+    clearSuggestions();
+
+    try {
+      const results = await getGeocode({ address });
+      console.log(results)
+      const { lat, lng } = await getLatLng(results[0]);
+      console.log(lat, lng)
+      
+      this.recenter({ lat, lng });
+    } catch (error) {
+      console.log("Error: ", error);
+    }
+  };
+
+  return (
+    <div className="search">
+      <Combobox onSelect={handleSelect}>
+        <ComboboxInput
+          value={value}
+          onChange={handleInput}
+          disabled={!ready}
+          placeholder="Search Address Here"
+        />
+        <ComboboxPopover className = "searchPop">
+          <ComboboxList className = "searchList">
+            {status === "OK" &&
+              data.map(({ id, description }) => (
+                <ComboboxOption key={id} value={description} />
+              ))}
+          </ComboboxList>
+        </ComboboxPopover>
+      </Combobox>
+    </div>
+  );
+}

@@ -36,3 +36,56 @@
   margin: 0; height: 100%; overflow: hidden;
   background-color: rgb(181, 198, 214);
 }
+.search {
+  position: absolute !important;
+  left: 137%;
+  right: 0%;
+  /* margin-left: 100%;
+  margin-right: 0px; */
+  top:-1vh;
+  transform: translateX(-50%);
+  width: 60%;
+  z-index: 10;
+}
+.searchPop {
+background-color: #ffffff;
+}
+.searchList li:hover{
+  background-color: rgb(233, 234, 235);
+  }
+
+
+.search input {
+  padding: 0.5rem;
+  font-size: 1.0rem;
+  width: 100%;
+}
+.search input :hover {
+  background-color: rgb(233, 234, 235);
+  padding: 0.5rem;
+  font-size: 1.0rem;
+  width: 100%;
+}
+
+.locate {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  z-index: 10;
+}
+.locate img {
+  width: 30px;
+  cursor: pointer;
+}
+h1 {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: #281414;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+}
