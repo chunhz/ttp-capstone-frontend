@@ -38,7 +38,7 @@ export const NavigationBar = () => (
             <Nav.Link href="/Add">Add WiFi</Nav.Link>
           </Nav.Item>
           <Nav.Item>
-            <Nav.Link href="https://github.com/BayardoZelaya/ttp-capstone-frontend">
+            <Nav.Link href="https://github.com/victorFFFF/NYC_Wifi_Finder">
               GitHub
             </Nav.Link>
           </Nav.Item>
