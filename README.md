@@ -37,7 +37,8 @@ To ru the program properly, you need to store your API Key in `.env.local` file 
 2. [Enable Google Geocoding API](https://developers.google.com/maps/documentation/javascript/places#enable_apis).
 3. [Maps JavaScript API](https://developers.google.com/maps/documentation/javascript/tutorial).
 4. [Get an API key](https://developers.google.com/maps/documentation/geocoding/start).
-5. **store you api key in `.env.local` file as `REACT_APP_GOOGLE_MAPS_API_KEY="YOUR_API_KEY"` **
+5. store you api key in `.env.local` file as `REACT_APP_GOOGLE_MAPS_API_KEY="YOUR_API_KEY"`
+
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
 
