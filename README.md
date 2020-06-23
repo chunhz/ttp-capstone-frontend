@@ -1,4 +1,4 @@
-### WiFI Finder NYC🗽
+### WiFi Finder NYC🗽
 
 ## Live Demo ---- *https://ttp-wifi-finder-185ee.web.app/*
 
