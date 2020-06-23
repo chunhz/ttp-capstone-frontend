@@ -8,7 +8,6 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ListComponent from "./ListComponent";
 import '../styles/mapStyle.css';
-import Geocode from "react-geocode";
 import axios from "axios";
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
@@ -93,7 +92,7 @@ class MapComponent extends Component {
                     
                    
                     //GET ZIPCODE
-                    if(  data.results[0].address_components[thelength-1].long_name.length == 5 &&  data.results[0].address_components[thelength-1].short_name.length == 5)
+                    if(  data.results[0].address_components[thelength-1].long_name.length === 5 &&  data.results[0].address_components[thelength-1].short_name.length === 5)
                           this.setState({foundZipCode: data.results[0].address_components[thelength-1].long_name});
                     else
                               this.setState({foundZipCode: data.results[0].address_components[thelength-2].long_name});
@@ -166,10 +165,7 @@ class MapComponent extends Component {
           }
 
           recenter =(searchLocation)=>{
-            console.log("Map COMP"+{searchLocation})
-            const d=({d})=>{
-              console.log("Mad"+d)
-            }
+          
             this.setState({
               currentLocation:{
                 lat: searchLocation.lat,
@@ -199,8 +195,7 @@ class MapComponent extends Component {
     console.log(this.state.draggable)
   }
   const recenter =(searchLocation)=>{
-    console.log("Map COMP"+JSON.stringify(searchLocation.lat))
-    const location = JSON.stringify(searchLocation);
+ 
     
     this.setState({
       currentLocation:{
@@ -217,6 +212,7 @@ class MapComponent extends Component {
     .then(data => {
       console.log(data.results[0].address_components[data.results[0].address_components.length-1].long_name, )
       this.setState({foundZipCode: data.results[0].address_components[data.results[0].address_components.length-1].long_name})
+      this.props.getCloseHotSpots(this.state.foundZipCode);
     });;
 
   }
@@ -341,7 +337,6 @@ class MapComponent extends Component {
                   <li>Borough: {this.state.selectedWifi.boroughName}</li>
                   <li>Wifi-Session: {this.state.selectedWifi.type}</li>
                   <li>Location Type: {this.state.selectedWifi.locationType}</li>
-                  <li>Location-Type: {this.state.locationType}</li>
                 </ul>
                 
               </div>

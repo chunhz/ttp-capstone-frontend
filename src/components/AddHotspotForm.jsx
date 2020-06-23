@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "./form.css";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { //Button,
+   Form, FormGroup, Label, Input } from "reactstrap";
 import {Link} from "react-router-dom";
 
 export default class hotspotForm extends Component {
