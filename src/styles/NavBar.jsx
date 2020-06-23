@@ -4,6 +4,8 @@ import { Navbar, NavbarBrand, Nav, NavItem, NavLink } from "reactstrap";
 import AddHotspotForm from "../components/AddHotspotForm";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import MapComponent from "../components/MapComponent";
+
+
 const NavBar = (props) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);

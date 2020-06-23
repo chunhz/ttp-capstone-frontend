@@ -3,7 +3,7 @@ import MapComponent from "./components/MapComponent";
 import NavBar from "./styles/NavBar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import { NavigationBar } from './styles/BootStrapNav';
+import  BootStrapNav  from './styles/BootStrapNav.js';
 import AddHotspotForm from './components/AddHotspotForm'
 
 export class App extends Component {
@@ -15,7 +15,7 @@ export class App extends Component {
         {/* <MapComponent /> */}
         <React.Fragment>
           <Router>
-            <NavigationBar />
+            <BootStrapNav />
 
             <Switch>
             <Route exact path="/" component={MapComponent} />

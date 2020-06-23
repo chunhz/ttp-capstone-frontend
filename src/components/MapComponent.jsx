@@ -8,9 +8,14 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import ListComponent from "./ListComponent";
 import '../styles/mapStyle.css';
+import Geocode from "react-geocode";
 import axios from "axios";
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css'; 
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from 'react-places-autocomplete';
 
 
 
@@ -39,7 +44,7 @@ class MapComponent extends Component {
       zoomSize: 13,
       foundZipCode : null,
       draggable: true,
-
+      address: '',
     };
     this.getManhattanWifi = this.getManhattanWifi.bind(this)
     this.getQueensWifi = this.getQueensWifi.bind(this)
@@ -59,7 +64,7 @@ class MapComponent extends Component {
 
           componentDidMount() {
 
-
+            
 
             navigator.geolocation.watchPosition((position) => {
               this.setState({
@@ -75,17 +80,16 @@ class MapComponent extends Component {
                 
               });
               this.setState({hotSpotsData: this.state.hotSpots.hotSpots})
-
+              console.log("cur lat"+this.state.currentLocation.lat)
               //Convert input location into zip code
-              const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.coords.latitude},${ position.coords.longitude}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
+              const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.currentLocation.lat},${ this.state.currentLocation.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`
               axios
                   .get(url)
                   .then((response) =>{
                     const data =response.data;
                     console.log(data.results[0].address_components)
                     //Get address
-                    let thelength  = data.results[0].address_components.length;
-                    console.log( thelength )    
+                    let thelength  = data.results[0].address_components.length;  
                     
                    
                     //GET ZIPCODE
@@ -161,9 +165,19 @@ class MapComponent extends Component {
           })
           }
 
-
-
-  
+          recenter =(searchLocation)=>{
+            console.log("Map COMP"+{searchLocation})
+            const d=({d})=>{
+              console.log("Mad"+d)
+            }
+            this.setState({
+              currentLocation:{
+                lat: searchLocation.lat,
+                lng: searchLocation.lng,
+              }
+            })
+           
+          }
 
 
 
@@ -184,7 +198,29 @@ class MapComponent extends Component {
     })
     console.log(this.state.draggable)
   }
-  
+  const recenter =(searchLocation)=>{
+    console.log("Map COMP"+JSON.stringify(searchLocation.lat))
+    const location = JSON.stringify(searchLocation);
+    
+    this.setState({
+      currentLocation:{
+        lat: JSON.stringify(searchLocation.lat),
+        lng: JSON.stringify(searchLocation.lng),
+      },
+      centerLocation:{
+        lat: JSON.stringify(searchLocation.lat),
+        lng: JSON.stringify(searchLocation.lng),
+      },
+    })
+    
+    const zip = fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.currentLocation.lat},${ this.state.currentLocation.lng}&key=${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`).then(response => response.json())
+    .then(data => {
+      console.log(data.results[0].address_components[data.results[0].address_components.length-1].long_name, )
+      this.setState({foundZipCode: data.results[0].address_components[data.results[0].address_components.length-1].long_name})
+    });;
+
+  }
+        
     
   
     return (
@@ -201,6 +237,7 @@ class MapComponent extends Component {
          </div>
 
         <Map
+          visible = {true} //1111
           google={this.props.google}
           style={this.mapContainerStyle}
           styles={mapStyle}
@@ -353,10 +390,12 @@ class MapComponent extends Component {
             <ListComponent wifiLists = {hotSpots} listMarker = {listMarker}/>
 
         </Map>
-      </div>
+        <SearchBar recenter={recenter.bind(this)}/>
+        </div>
     );
   }
 }
+
 
 MapComponent.propTypes = {
   getCloseHotSpots: PropTypes.func.isRequired,
@@ -372,3 +411,89 @@ export default connect(mapStateToProps, { getCloseHotSpots,getManhattan,getQueen
     apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   })(MapComponent)
 );
+
+
+class SearchBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { 
+      address: '',
+      searchLocation: {
+        lat: 40.7128,
+        lng: -74.006,
+      },
+    };
+    
+  }
+
+  handleChange = address => {
+    this.setState({ address });
+  };
+
+  handleSelect = address => {
+    geocodeByAddress(address)
+      .then(results => getLatLng(results[0]))
+      .then(latLng => {
+        console.log('Success', latLng)
+        this.setState({
+          address,
+          searchLocation:{
+            lat: latLng.lat,
+            lng: latLng.lng,
+          }
+        })
+        this.props.recenter(this.state.searchLocation);
+      }
+        )
+      .catch(error => console.error('Error', error));
+    
+    
+  };
+  
+  render() {
+    // console.log(this.state.searchLocation)
+
+    return (
+      <div className="search">
+      <PlacesAutocomplete
+        value={this.state.address}
+        onChange={this.handleChange}
+        onSelect={this.handleSelect.bind(this)}
+      >
+        {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
+          <div>
+            <input
+              {...getInputProps({
+                placeholder: 'Search Places ...',
+                className: 'location-search-input',
+              })}
+            />
+            <div className="autocomplete-dropdown-container">
+              {loading && <div>Loading...</div>}
+              {suggestions.map(suggestion => {
+                const className = suggestion.active
+                  ? 'suggestion-item--active'
+                  : 'suggestion-item';
+                // inline style for demonstration purpose
+                const style = suggestion.active
+                  ? { backgroundColor: 'rgb(233, 234, 235)', cursor: 'pointer' }
+                  : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                return (
+                  <div
+                    {...getSuggestionItemProps(suggestion, {
+                      className,
+                      style,
+                    })}
+                  >
+                    <span>{suggestion.description}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </PlacesAutocomplete>
+      </div>
+    );
+  }
+}
