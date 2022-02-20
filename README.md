@@ -2,13 +2,6 @@
 
 ## Live Demo ---- *https://ttp-wifi-finder-185ee.web.app/*
 
-2021-06-25
-
-2021-06-25 (1)
-
-2021-06-25 (2)
-
-2021-06-25 (3)
 **open with Google Chrome broswer**
 
 ## Features
